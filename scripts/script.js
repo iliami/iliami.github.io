@@ -275,6 +275,24 @@ uploadGraphInput.addEventListener("change", handleChangeOnUploadGraphInput);
 
 //#endregion IMPORT & EXPORT
 
+const clear = () => {
+    while (svg.firstChild) {
+        svg.removeChild(svg.firstChild);
+    }
+    while (vertexes.length > 0) {
+        vertexes.pop();
+    }
+    while (edges.length > 0) {
+        edges.pop();
+    }
+    while (adjacencyList.length > 0) {
+        adjacencyList.pop();
+    }
+    while (adjacencyMatrix.length > 0) {
+        adjacencyMatrix.pop();
+    }
+}
+
 const vertexes = [];
 const edges = [];
 const adjacencyMatrix = [];
@@ -530,15 +548,7 @@ function handleChangeOnUploadGraphInput(e) {
     reader.readAsText(file);
 
     reader.onload = () => {
-        while (svg.firstChild) {
-            svg.removeChild(svg.firstChild);
-        }
-        while (vertexes.length > 0) {
-            vertexes.pop();
-        }
-        while (edges.length > 0) {
-            edges.pop();
-        }
+        clear();
 
         const graph = new DOMParser().parseFromString(reader.result, "text/xml")
             .children[0];
