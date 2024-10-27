@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BFS and DFS visualization</title>
+</head>
+
+<body>
+    <dialog style="padding: 0">
+        <div id="modal_box" style="padding: 1rem">
+            <div id="modal_content"></div>
+            <button id="close_modal">Закрыть</button>
+        </div>
+    </dialog>
+    <div
+        style="display: flex; width: 100%; height: 95vh; justify-content: center; align-items: center; font-size: 16px;">
+        <div style="height: 100%; display: flex; flex-direction: column; justify-content:space-around;">
+            <div>
+                <form style="margin: 30px;">
+                    <div style="padding: 10px;">
+                        <label for="default">
+                            <input type="radio" name="mode" id="default" checked>
+                            По умолчанию
+                        </label>
+                    </div>
+                    <div style="padding: 10px;">
+                        <label for="vertex">
+                            <input type="radio" name="mode" id="vertex">
+                            Добавление вершин
+                        </label>
+                    </div>
+                    <div style="padding: 10px;">
+                        <label for="edge">
+                            <input type="radio" name="mode" id="edge">
+                            Добавление рёбер
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <div style="padding: 10px;">
+                    <a href="#" target="_blank" id="download_graph">
+                        Экспорт графа
+                    </a>
+                </div>
+                <div style="padding: 10px;">
+                    <div>
+                        <label for="upload_graph">
+                            Импорт графа
+                        </label>
+                    </div>
+                    <input type="file" id="upload_graph">
+                </div>
+                <div style="padding: 10px;">
+                    <button type="button" id="show_adjacency_matrix">
+                        Матрица смежности
+                    </button>
+                </div>
+                <div style="padding: 10px;">
+                    <label for="vertex_num">Номер вершины: </label>
+                    <select name="vertex_num" id="vertex_num" style="width: 64px;">
+                    </select>
+                </div>
+                <div style="padding: 10px;">
+                    <button type="button" id="BFS_start" disabled>
+                        Запустить обход в ширину
+                    </button>
+                </div>
+                <div
+                    style="max-width: 270px; margin-right: 10px; padding: 3px; border: 1px solid black; border-radius: 8px; white-space: pre-line;">
+                    <p id="BFS_result">Здесь будет результат обхода в ширину</p>
+                </div>
+                <div style="padding: 10px;">
+                    <button type="button" id="DFS_start" disabled>
+                        Запустить обход в глубину
+                    </button>
+                </div>
+                <div
+                    style="max-width: 270px; margin-right: 10px; padding: 3px; border: 1px solid black; border-radius: 8px; white-space: pre-line;">
+                    <p id="DFS_result">Здесь будет результат обхода в глубину</p>
+                </div>
+                <div style="padding: 10px;">
+                    <button type="button" id="default_colors" disabled>
+                        Вернуть исходные цвета
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="canvas_container">
+            <svg id="canvas" height="600" width="1000" viewBox="0 0 1000 600"
+                style="border: 2px solid black; font-size: 36px; user-select: none">
+            </svg>
+        </div>
+    </div>
+    <script src="./script.js"></script>
+</body>
+
+</html>
