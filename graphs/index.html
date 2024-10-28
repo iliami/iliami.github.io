@@ -4,34 +4,34 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/style.css">
     <title>BFS and DFS visualization</title>
 </head>
 
 <body>
-    <dialog style="padding: 0">
-        <div id="modal_box" style="padding: 1rem">
+    <dialog>
+        <div id="modal_box">
             <div id="modal_content"></div>
             <button id="close_modal">Закрыть</button>
         </div>
     </dialog>
-    <div
-        style="display: flex; width: 100%; height: 95vh; justify-content: center; align-items: center; font-size: 16px;">
-        <div style="height: 100%; display: flex; flex-direction: column; justify-content:space-around;">
+    <main>
+        <div class="menu">
             <div>
-                <form style="margin: 30px;">
-                    <div style="padding: 10px;">
+                <form class="form_mode">
+                    <div class="form_mode_field">
                         <label for="default">
                             <input type="radio" name="mode" id="default" checked>
                             По умолчанию
                         </label>
                     </div>
-                    <div style="padding: 10px;">
+                    <div class="form_mode_field">
                         <label for="vertex">
                             <input type="radio" name="mode" id="vertex">
                             Добавление вершин
                         </label>
                     </div>
-                    <div style="padding: 10px;">
+                    <div class="form_mode_field">
                         <label for="edge">
                             <input type="radio" name="mode" id="edge">
                             Добавление рёбер
@@ -40,12 +40,12 @@
                 </form>
             </div>
             <div>
-                <div style="padding: 10px;">
+                <div class="download_graph">
                     <a href="#" target="_blank" id="download_graph">
                         Экспорт графа
                     </a>
                 </div>
-                <div style="padding: 10px;">
+                <div class="upload_graph">
                     <div>
                         <label for="upload_graph">
                             Импорт графа
@@ -53,35 +53,33 @@
                     </div>
                     <input type="file" id="upload_graph">
                 </div>
-                <div style="padding: 10px;">
+                <div class="show_adj_matrix">
                     <button type="button" id="show_adjacency_matrix">
                         Матрица смежности
                     </button>
                 </div>
-                <div style="padding: 10px;">
+                <div class="vertex_num">
                     <label for="vertex_num">Номер вершины: </label>
                     <select name="vertex_num" id="vertex_num" style="width: 64px;">
                     </select>
                 </div>
-                <div style="padding: 10px;">
+                <div class="bfs_start">
                     <button type="button" id="BFS_start" disabled>
                         Запустить обход в ширину
                     </button>
                 </div>
-                <div
-                    style="max-width: 270px; margin-right: 10px; padding: 3px; border: 1px solid black; border-radius: 8px; white-space: pre-line;">
+                <div class="bfs_result">
                     <p id="BFS_result">Здесь будет результат обхода в ширину</p>
                 </div>
-                <div style="padding: 10px;">
+                <div class="dfs_start">
                     <button type="button" id="DFS_start" disabled>
                         Запустить обход в глубину
                     </button>
                 </div>
-                <div
-                    style="max-width: 270px; margin-right: 10px; padding: 3px; border: 1px solid black; border-radius: 8px; white-space: pre-line;">
+                <div class="dfs_result">
                     <p id="DFS_result">Здесь будет результат обхода в глубину</p>
                 </div>
-                <div style="padding: 10px;">
+                <div class="ret_default_colors" style="padding: 10px;">
                     <button type="button" id="default_colors" disabled>
                         Вернуть исходные цвета
                     </button>
@@ -89,11 +87,10 @@
             </div>
         </div>
         <div id="canvas_container">
-            <svg id="canvas" height="600" width="1000" viewBox="0 0 1000 600"
-                style="border: 2px solid black; font-size: 36px; user-select: none">
+            <svg id="canvas" height="600" width="1000" viewBox="0 0 1000 600">
             </svg>
         </div>
-    </div>
+    </main>
     <script src="./scripts/script.js"></script>
 </body>
 
