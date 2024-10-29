@@ -88,6 +88,8 @@ selectorVertexNumber.addEventListener(
 //#region BFS
 
 const BFS_with_colors = (graph, node) => {
+    blockControls();
+
     const vertex = vertexes[node];
     const circle = vertex.element.children[0];
     setTimeout(() => circle.setAttribute("fill", "#a30559"), sleepTime);
@@ -133,6 +135,8 @@ const BFS_with_colors = (graph, node) => {
             });
     }
 
+    setTimeout(unblockControls, sleepTime);
+
     sleepTime = ms;
 
     return visited;
@@ -148,6 +152,8 @@ const textResultBFS = document.getElementById("BFS_result");
 //#region DFS
 
 const DFS_with_colors = (graph, node) => {
+    blockControls();
+
     function DFS(graph, node, prevNode, visited) {
         if (!visited.includes(node)) {
             visited.push(node);
@@ -185,6 +191,7 @@ const DFS_with_colors = (graph, node) => {
         }
 
         if (prevNode == null) {
+            setTimeout(unblockControls, sleepTime);
             sleepTime = ms;
         }
 
@@ -252,7 +259,33 @@ const clear = () => {
     while (adjacencyMatrix.length > 0) {
         adjacencyMatrix.pop();
     }
-}
+};
+
+const blockControls = () => {
+    defaultMode.setAttribute("disabled", "disabled");
+    vertexMode.setAttribute("disabled", "disabled");
+    edgeMode.setAttribute("disabled", "disabled");
+    showAdjacencyMatrixModalBtn.setAttribute("disabled", "disabled");
+    closeAdjacencyMatrixModalBtn.setAttribute("disabled", "disabled");
+    selectorVertexNumber.setAttribute("disabled", "disabled");
+    btnStartBFS.setAttribute("disabled", "disabled");
+    btnStartDFS.setAttribute("disabled", "disabled");
+    returnDefaultColorsButton.setAttribute("disabled", "disabled");
+    uploadGraphInput.setAttribute("disabled", "disabled");
+};
+
+const unblockControls = () => {
+    defaultMode.removeAttribute("disabled");
+    vertexMode.removeAttribute("disabled");
+    edgeMode.removeAttribute("disabled");
+    showAdjacencyMatrixModalBtn.removeAttribute("disabled");
+    closeAdjacencyMatrixModalBtn.removeAttribute("disabled");
+    selectorVertexNumber.removeAttribute("disabled");
+    btnStartBFS.removeAttribute("disabled");
+    btnStartDFS.removeAttribute("disabled");
+    returnDefaultColorsButton.removeAttribute("disabled");
+    uploadGraphInput.removeAttribute("disabled");
+};
 
 const vertexes = [];
 const edges = [];
@@ -478,24 +511,21 @@ function handleChangeOnSelectorVertexNumber(e) {
 function handleClickOnButtonStartDFS(ev) {
     returnDefaultColors();
     const visited = DFS_with_colors(adjacencyList, selectedVertexNumber - 1);
-    returnDefaultColorsButton.removeAttribute("disabled");
     textResultDFS.innerHTML = visited.map((v) => v + 1).join(", ");
 }
 
 function handleClickOnButtonStartBFS(ev) {
     returnDefaultColors();
     const visited = BFS_with_colors(adjacencyList, selectedVertexNumber - 1);
-    returnDefaultColorsButton.removeAttribute("disabled");
     textResultBFS.innerHTML = visited.map((v) => v + 1).join(", ");
 }
 
 function handleClickOnButtonReturnDefaultColors(e) {
     returnDefaultColors();
-    returnDefaultColorsButton.setAttribute("disabled", "");
+    returnDefaultColorsButton.setAttribute("disabled", "disabled");
 }
 
 function handleClickOnDownloadGraphButton(e) {
-    returnDefaultColors();
     var serializer = new XMLSerializer();
     var svgString = serializer.serializeToString(svg);
     var data = new Blob([svgString], { type: "text/xml" });
@@ -525,12 +555,12 @@ function handleChangeOnUploadGraphInput(e) {
         // Vertexes
         for (const g of svgElements) {
             if (g.id - 100000 < 0) {
-                console.log("node ", g);
                 g.addEventListener("click", handleClickOnVertex);
                 g.addEventListener("mousedown", handleMouseDownOnVertex);
                 g.addEventListener("mouseup", handleMouseUpOnVertex);
 
                 const circle = g.children[0];
+                circle.setAttribute("fill", "#8000FF");
                 vertexes.push({
                     name: g.getAttribute("id"),
                     x: circle.getAttribute("cx"),
@@ -569,8 +599,8 @@ function handleChangeOnUploadGraphInput(e) {
         // Edges
         for (const g of svgElements) {
             if (g.id - 100000 > 0) {
-                console.log("edge ", g);
                 const line = g.children[0];
+                line.setAttribute("stroke", "black");
 
                 const firstVertexCoords = {
                     x: line.getAttribute("x1"),

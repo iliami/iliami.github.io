@@ -109,7 +109,7 @@ select#vertex_num {
     border-radius: 10px;
 }
 
-.upload_graph > input {
+.upload_graph input {
     width: 0.1px;
     height: 0.1px;
     opacity: 0;
@@ -166,4 +166,8 @@ select#vertex_num {
     border: 2px solid black;
     font-size: 36px;
     user-select: none;
+}
+
+.btn:disabled, .btn:disabled + label, input:disabled, input:disabled + label {
+    background-color: rgb(130, 130, 130);
 }
