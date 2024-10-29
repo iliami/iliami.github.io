@@ -37,36 +37,42 @@ edgeMode.addEventListener("click", handleClickOnRadioButton_ChangeMode);
 
 //#region MODAL WINDOW
 const modal = document.querySelector("dialog");
-const modalBox = document.getElementById("modal_box");
-const modalContent = document.getElementById("modal_content");
-const showAdjacencyMatrixModalBtn = document.getElementById(
-    "show_adjacency_matrix"
+const modalBox = document.getElementById("graph_info_modal_box");
+const modalContent = document.getElementById("graph_info_modal_content");
+const showGraphInfoModalBtn = document.getElementById("show_graph_info_modal");
+const closeGraphInfoModalBtn = document.getElementById(
+    "close_graph_info_modal"
 );
-const closeAdjacencyMatrixModalBtn = document.getElementById("close_modal");
 
-const getAdjacencyMatrixAsString = () => {
+const getGraphInfoAsString = () => {
     if (vertexes.length > 0) {
-        let result = "";
+        let adjMatrixStr = "Матрица смежности:<br>";
         for (let i = 0; i < vertexes.length; i++) {
-            result += adjacencyMatrix[i].join(", ") + ",<br>";
+            adjMatrixStr += adjacencyMatrix[i].join(", ") + ",<br>";
         }
 
-        return result;
+        let adjListStr = "Список смежности:<br>";
+        for (let i = 0; i < vertexes.length; i++) {
+            const adjList = adjacencyList[i].map((x) => x + 1);
+            adjListStr += i + 1 + ": [" + adjList.join(", ") + "]<br>";
+        }
+
+        return `<div style="padding: 10px;">${adjMatrixStr}</div><div style="padding: 10px;">${adjListStr}</div>`;
     } else {
-        return "Нет вершин";
+        return "Нет графа";
     }
 };
 
 let isModalOpen = false;
 
-showAdjacencyMatrixModalBtn.addEventListener("click", (e) => {
+showGraphInfoModalBtn.addEventListener("click", (e) => {
     modal.showModal();
     isModalOpen = true;
     e.stopPropagation();
-    modalContent.innerHTML = getAdjacencyMatrixAsString();
+    modalContent.innerHTML = getGraphInfoAsString();
 });
 
-closeAdjacencyMatrixModalBtn.addEventListener("click", () => {
+closeGraphInfoModalBtn.addEventListener("click", () => {
     modal.close();
     isModalOpen = false;
 });
@@ -265,8 +271,8 @@ const blockControls = () => {
     defaultMode.setAttribute("disabled", "disabled");
     vertexMode.setAttribute("disabled", "disabled");
     edgeMode.setAttribute("disabled", "disabled");
-    showAdjacencyMatrixModalBtn.setAttribute("disabled", "disabled");
-    closeAdjacencyMatrixModalBtn.setAttribute("disabled", "disabled");
+    showGraphInfoModalBtn.setAttribute("disabled", "disabled");
+    closeGraphInfoModalBtn.setAttribute("disabled", "disabled");
     selectorVertexNumber.setAttribute("disabled", "disabled");
     btnStartBFS.setAttribute("disabled", "disabled");
     btnStartDFS.setAttribute("disabled", "disabled");
@@ -278,8 +284,8 @@ const unblockControls = () => {
     defaultMode.removeAttribute("disabled");
     vertexMode.removeAttribute("disabled");
     edgeMode.removeAttribute("disabled");
-    showAdjacencyMatrixModalBtn.removeAttribute("disabled");
-    closeAdjacencyMatrixModalBtn.removeAttribute("disabled");
+    showGraphInfoModalBtn.removeAttribute("disabled");
+    closeGraphInfoModalBtn.removeAttribute("disabled");
     selectorVertexNumber.removeAttribute("disabled");
     btnStartBFS.removeAttribute("disabled");
     btnStartDFS.removeAttribute("disabled");

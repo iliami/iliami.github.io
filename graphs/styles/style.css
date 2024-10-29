@@ -8,8 +8,13 @@ dialog {
     padding: 0;
 }
 
-#modal_box {
+#graph_info_modal_box {
     padding: 1rem;
+}
+
+#graph_info_modal_content {
+    display: flex;
+    flex-direction: row;
 }
 
 /* MODAL WINDOW --------------------------------------------------------------------------- */
@@ -52,7 +57,7 @@ main {
 .form_mode_field,
 .download_graph,
 .upload_graph,
-.show_adj_matrix,
+.show_graph_info,
 .vertex_num,
 .bfs_start,
 .dfs_start,
