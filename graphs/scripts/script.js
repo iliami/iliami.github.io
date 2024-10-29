@@ -3,16 +3,12 @@
 const ms = 400;
 let sleepTime = ms;
 
-const delay = (time) =>
-    new Promise((resolve, reject) => setTimeout(resolve, time));
-
 //#endregion TIME
 
 //#region SVG
 
 const ns = "http://www.w3.org/2000/svg";
 
-const svgContainer = document.getElementById("canvas_container");
 const svg = document.getElementById("canvas");
 const svgCoords = svg.getBoundingClientRect();
 svg.addEventListener("click", handleClickOnCanvas);
@@ -91,29 +87,13 @@ selectorVertexNumber.addEventListener(
 
 //#region BFS
 
-const BFS = (graph, node) => {
-    const visited = [];
-    const queue = [node];
-
-    while (queue.length > 0) {
-        graph[queue.shift()]
-            .filter((n) => !visited.includes(n))
-            .map((n) => {
-                visited.push(n);
-                queue.push(n);
-            });
-    }
-
-    return visited;
-};
-
 const BFS_with_colors = (graph, node) => {
     const vertex = vertexes[node];
     const circle = vertex.element.children[0];
     setTimeout(() => circle.setAttribute("fill", "#a30559"), sleepTime);
     sleepTime += ms;
 
-    const visited = [];
+    const visited = [node];
     const queue = [node];
 
     while (queue.length > 0) {
@@ -166,25 +146,6 @@ const textResultBFS = document.getElementById("BFS_result");
 //#endregion BFS
 
 //#region DFS
-
-const DFS = (graph, node) => {
-    const visited = [];
-    const stack = [node];
-
-    while (stack.length > 0) {
-        const _node = stack.pop();
-
-        if (!visited.includes(_node)) {
-            visited.push(_node);
-        }
-
-        graph[_node]
-            .filter((x) => !visited.includes(x))
-            .map((x) => stack.push(x));
-    }
-
-    return visited;
-};
 
 const DFS_with_colors = (graph, node) => {
     function DFS(graph, node, prevNode, visited) {
