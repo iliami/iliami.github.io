@@ -54,7 +54,7 @@ const getGraphInfoAsString = () => {
         let adjListStr = "Список смежности:<br>";
         for (let i = 0; i < vertexes.length; i++) {
             const adjList = adjacencyList[i].map((x) => x + 1);
-            adjListStr += i + 1 + ": [" + adjList.join(", ") + "]<br>";
+            adjListStr += i + 1 + ": [" + adjList.join(", ") + "],<br>";
         }
 
         return `<div style="padding: 10px;">${adjMatrixStr}</div><div style="padding: 10px;">${adjListStr}</div>`;
