@@ -94,7 +94,9 @@ selectorVertexNumber.addEventListener(
 //#region BFS
 
 const BFS_with_colors = (graph, node) => {
-    blockControls();
+    defaultMode.checked = true;
+    mode = 1;
+    lockControls();
 
     const vertex = vertexes[node];
     const circle = vertex.element.children[0];
@@ -147,7 +149,7 @@ const BFS_with_colors = (graph, node) => {
             });
     }
 
-    setTimeout(unblockControls, sleepTime);
+    setTimeout(unlockControls, sleepTime);
 
     sleepTime = ms;
 
@@ -164,7 +166,9 @@ const textResultBFS = document.getElementById("BFS_result");
 //#region DFS
 
 const DFS_with_colors = (graph, node) => {
-    blockControls();
+    defaultMode.checked = true;
+    mode = 1;
+    lockControls();
 
     function DFS(graph, node, prevNode, visited) {
         if (!visited.includes(node)) {
@@ -212,7 +216,7 @@ const DFS_with_colors = (graph, node) => {
         }
 
         if (prevNode == null) {
-            setTimeout(unblockControls, sleepTime);
+            setTimeout(unlockControls, sleepTime);
             sleepTime = ms;
         }
 
@@ -282,7 +286,7 @@ const clear = () => {
     }
 };
 
-const blockControls = () => {
+const lockControls = () => {
     defaultMode.setAttribute("disabled", "disabled");
     vertexMode.setAttribute("disabled", "disabled");
     edgeMode.setAttribute("disabled", "disabled");
@@ -295,7 +299,7 @@ const blockControls = () => {
     uploadGraphInput.setAttribute("disabled", "disabled");
 };
 
-const unblockControls = () => {
+const unlockControls = () => {
     defaultMode.removeAttribute("disabled");
     vertexMode.removeAttribute("disabled");
     edgeMode.removeAttribute("disabled");
