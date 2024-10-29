@@ -132,10 +132,16 @@ const BFS_with_colors = (graph, node) => {
                 );
                 sleepTime += ms;
 
-                setTimeout(
-                    () => circle.setAttribute("fill", "#a30559"),
-                    sleepTime
-                );
+                setTimeout(() => {
+                    if (
+                        selectedVertex != null &&
+                        selectedVertex.name == vertex.name
+                    ) {
+                        prevCircleColor = "#a30559";
+                    } else {
+                        circle.setAttribute("fill", "#a30559");
+                    }
+                }, sleepTime);
                 sleepTime += ms;
                 //#endregion
             });
@@ -186,7 +192,16 @@ const DFS_with_colors = (graph, node) => {
                 sleepTime += ms;
             }
 
-            setTimeout(() => circle.setAttribute("fill", "#a30559"), sleepTime);
+            setTimeout(() => {
+                if (
+                    selectedVertex != null &&
+                    selectedVertex.name == vertex.name
+                ) {
+                    prevCircleColor = "#a30559";
+                } else {
+                    circle.setAttribute("fill", "#a30559");
+                }
+            }, sleepTime);
             sleepTime += ms;
             //#endregion
 
@@ -300,6 +315,7 @@ const adjacencyList = [];
 let mode = 1;
 let selectedVertex = null;
 let selectedVertexNumber = 1;
+let prevCircleColor = null;
 
 //#endregion SOMETHING
 
@@ -454,6 +470,7 @@ function handleMouseDownOnVertex(e) {
     if (mode === 1) {
         selectedVertex = vertexes.find((v) => v.name == e.target.id);
         const circle = selectedVertex.element.children[0];
+        prevCircleColor = circle.getAttribute("fill");
         circle.setAttribute("fill", "#3e017a");
     }
 }
@@ -461,8 +478,9 @@ function handleMouseDownOnVertex(e) {
 function handleMouseUpOnVertex(e) {
     if (mode === 1) {
         const circle = selectedVertex.element.children[0];
-        circle.setAttribute("fill", "#8000FF");
+        circle.setAttribute("fill", prevCircleColor);
         selectedVertex = null;
+        prevCircleColor = null;
     }
 }
 
