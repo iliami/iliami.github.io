@@ -532,10 +532,12 @@ function handleClickOnButtonReturnDefaultColors(e) {
 }
 
 function handleClickOnDownloadGraphButton(e) {
-    var serializer = new XMLSerializer();
-    var svgString = serializer.serializeToString(svg);
-    var data = new Blob([svgString], { type: "text/xml" });
-    e.target.href = window.URL.createObjectURL(data);
+    if (vertexes.length > 0) {
+        var serializer = new XMLSerializer();
+        var svgString = serializer.serializeToString(svg);
+        var data = new Blob([svgString], { type: "text/xml" });
+        e.target.href = window.URL.createObjectURL(data);
+    }
 }
 
 function handleChangeOnUploadGraphInput(e) {
