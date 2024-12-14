@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.svg" type="image/svg">
+    <title>iliami</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Knewave&family=Montserrat:wght@700&display=swap');
+
+        :root {
+            --vw: 1vw;
+            --col: 10vw;
+            --col-gap: 1rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            scrollbar-width: 0;
+            overflow: auto;
+        }
+
+        .iliami {
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            z-index: 1;
+            position: fixed;
+
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .iliami>h1 {
+            font-family: "Montserrat", sans-serif;
+            font-optical-sizing: auto;
+            font-size: calc(var(--vw) * 20);
+            font-weight: 700;
+            font-style: normal;
+
+            text-decoration: underline dashed white;
+            letter-spacing: calc(var(--vw) * 6 / 4);
+
+            background-image: linear-gradient(to right, rgb(251, 255, 0) 0%, rgb(34, 255, 0) 50%, rgb(0, 255, 140) 100%);
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        .items {
+            columns: var(--col);
+            column-gap: var(--col-gap);
+        }
+
+        .item {
+            width: var(--col);
+            height: calc(var(--col) * 2);
+            margin-bottom: var(--col-gap);
+            background-color: var(--bg-color);
+        }
+    </style>
+    <script>
+
+    </script>
+</head>
+
+<body>
+    <div class="iliami">
+        <h1>iliami</h1>
+    </div>
+
+    <div class="items" id="items"></div>
+
+    <script>
+        const MAX_ITEMS_COUNT = 200;
+
+        const generateColor = (index) => {
+            const hue = (index * 137.508) % 360; // 137.508 - золотое сечение для равномерного распределения цветов 
+            return `hsl(${hue}, 80%, 80%)`;
+        }
+
+        const addItem = (position) => {
+            const newItem = document.createElement('div');
+            newItem.className = 'item';
+
+            if (position === 'top') {
+                items.insertBefore(newItem, items.firstChild);
+            } else {
+                items.appendChild(newItem);
+            }
+
+            document.querySelectorAll('.item').forEach((item, i) => {
+                const index = i + 1;
+                item.id = index;
+                const color = generateColor(index);
+                item.style.setProperty('--bg-color', color);
+            });
+        }
+
+        const checkScroll = () => {
+            if (items.childNodes.length >= MAX_ITEMS_COUNT) {
+                return;
+            }
+
+            if (document.documentElement.offsetHeight >= document.documentElement.clientHeight * 0.7) {
+                addItem('bottom');
+            }
+
+            if (window.scrollY === 0) {
+                addItem('top');
+                window.scrollTo(0, 1);
+            }
+        }
+        
+        window.addEventListener('scroll', checkScroll);
+
+        const items = document.getElementById('items');
+
+        for (let i = 1; i < MAX_ITEMS_COUNT / 5; i++) {
+            addItem('top');
+        }
+    </script>
+</body>
+
+</html>
