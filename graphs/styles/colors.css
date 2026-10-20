@@ -1,0 +1,190 @@
+:root {
+    color-scheme: dark;
+
+    /* =========================================================
+     БАЗОВЫЕ ПОВЕРХНОСТИ
+     ========================================================= */
+
+    --color-bg: #3e5f44; /* #3E5F44 | RGB 62 95 68 | HSL 131 21% 31% */
+
+    --color-surface-1: #426349; /* #426349 | RGB 66 99 73 | HSL 133 20% 32% */
+    --color-surface-2: #35523a; /* #35523A | RGB 53 82 58 | HSL 130 21% 26% */
+    --color-surface-3: #2b422f; /* #2B422F | RGB 43 66 47 | HSL 130 21% 21% */
+
+    --color-surface-hover: #38563e; /* #38563E | RGB 56 86 62 | HSL 132 21% 28% */
+    --color-surface-active: #2f4a35; /* #2F4A35 | RGB 47 74 53 | HSL 133 22% 24% */
+
+    --color-overlay: rgb(43 66 47 / 0.72); /* затемнение без чистого чёрного */
+    --shadow-color: rgb(20 32 23 / 0.36);
+
+    /* =========================================================
+     ТЕКСТ
+     ========================================================= */
+
+    --color-text: #ddd6b9; /* #DDD6B9 | RGB 221 214 185 | HSL 48 35% 80% */
+    --color-text-rgb: 221 214 185;
+    --color-text-hsl: 48 35% 80%;
+
+    --color-text-muted: #dbd5ba; /* #DBD5BA | RGB 219 213 186 | HSL 49 31% 79% */
+    --color-text-inverse: #1f2e23; /* #1F2E23 | RGB 31 46 35 | HSL 136 20% 15% */
+
+    --color-text-disabled: #d6d0b5; /* #D6D0B5 | RGB 214 208 181 | HSL 49 29% 77% */
+    --color-text-on-accent: #1f2e23; /* тёмный текст для светлых акцентов */
+
+    /* =========================================================
+     ГРАНИЦЫ И ФОКУС
+     ========================================================= */
+
+    --color-border: #9dbfa2; /* #9DBFA2 | RGB 157 191 162 | HSL 129 21% 68% */
+    --color-border-strong: #ddd6b9; /* #DDD6B9 | RGB 221 214 185 | HSL 48 35% 80% */
+    --color-border-subtle: #6f8f73; /* #6F8F73 | RGB 111 143 115 | HSL 128 13% 50% — только декоративно */
+
+    --focus-ring: #e8cf7a; /* #E8CF7A | RGB 232 207 122 | HSL 46 70% 69% */
+    --focus-ring-offset: #3e5f44; /* #3E5F44 */
+    --focus-ring-width: 2px;
+
+    --selection-bg: #e8cf7a; /* #E8CF7A */
+    --selection-text: #1f2e23; /* #1F2E23 */
+
+    /* =========================================================
+     СЕМАНТИЧЕСКИЕ ЦВЕТА
+     ========================================================= */
+
+    /* Primary: фон кнопок/активных элементов. Для текста на тёмном фоне
+     используйте --color-primary-text, а не --color-primary. */
+    --color-primary: #a8c9ad; /* #A8C9AD | RGB 168 201 173 | HSL 129 23% 72% */
+    --color-primary-hover: #b7d6bb; /* #B7D6BB | RGB 183 214 187 | HSL 128 27% 78% */
+    --color-primary-active: #93b899; /* #93B899 | RGB 147 184 153 | HSL 130 21% 65% */
+    --color-primary-text: #c4dec7; /* #C4DEC7 | RGB 196 222 199 | HSL 127 28% 82% */
+    --color-on-primary: #1f2e23; /* #1F2E23 */
+
+    --color-secondary: #c9b98a; /* #C9B98A | RGB 201 185 138 | HSL 45 37% 66% */
+    --color-secondary-hover: #d8c99b; /* #D8C99B | RGB 216 201 155 | HSL 45 44% 73% */
+    --color-secondary-active: #b5a576; /* #B5A576 | RGB 181 165 118 | HSL 45 30% 59% */
+    --color-secondary-text: #e2d6ac; /* #E2D6AC | RGB 226 214 172 | HSL 47 48% 78% */
+    --color-on-secondary: #1f2e23;
+
+    --color-success: #7fbf8a; /* #7FBF8A | RGB 127 191 138 | HSL 130 33% 62% */
+    --color-success-text: #ade4b4; /* #ADE4B4 | RGB 173 228 180 | HSL 128 51% 79% */
+    --color-on-success: #1f2e23;
+
+    --color-warning: #e0b85c; /* #E0B85C | RGB 224 184 92 | HSL 42 68% 62% */
+    --color-warning-text: #f4d583; /* #F4D583 | RGB 244 213 131 | HSL 44 84% 74% */
+    --color-on-warning: #1f2e23;
+
+    --color-error: #f0a094; /* #F0A094 | RGB 240 160 148 | HSL 8 75% 76% */
+    --color-error-hover: #f9c4bc; /* #F9C4BC | RGB 249 196 188 | HSL 8 84% 86% */
+    --color-error-active: #e58a7a; /* #E58A7A | RGB 229 138 122 | HSL 9 67% 69% */
+    --color-error-text: #fbcdc6; /* #FBCDC6 | RGB 251 205 198 | HSL 8 87% 88% */
+    --color-on-error: #1f2e23;
+
+    /* =========================================================
+     КНОПКИ: ТОКЕНЫ СОСТОЯНИЙ
+     ========================================================= */
+
+    --button-primary-bg: var(--color-primary);
+    --button-primary-bg-hover: var(--color-primary-hover);
+    --button-primary-bg-active: var(--color-primary-active);
+    --button-primary-text: var(--color-on-primary);
+    --button-primary-border: transparent;
+
+    --button-secondary-bg: var(--color-secondary);
+    --button-secondary-bg-hover: var(--color-secondary-hover);
+    --button-secondary-bg-active: var(--color-secondary-active);
+    --button-secondary-text: var(--color-on-secondary);
+    --button-secondary-border: transparent;
+
+    --button-neutral-bg: var(--color-surface-1);
+    --button-neutral-bg-hover: var(--color-surface-hover);
+    --button-neutral-bg-active: var(--color-surface-active);
+    --button-neutral-text: var(--color-text);
+    --button-neutral-border: var(--color-border);
+
+    --button-ghost-bg: transparent;
+    --button-ghost-bg-hover: rgb(221 214 185 / 0.12);
+    --button-ghost-bg-active: rgb(221 214 185 / 0.18);
+    --button-ghost-text: var(--color-text);
+    --button-ghost-border: transparent;
+
+    --button-danger-bg: var(--color-error);
+    --button-danger-bg-hover: var(--color-error-hover);
+    --button-danger-bg-active: var(--color-error-active);
+    --button-danger-text: var(--color-on-error);
+    --button-danger-border: transparent;
+
+    --button-disabled-bg: #435d48; /* #435D48 | RGB 67 93 72 | HSL 132 16% 31% */
+    --button-disabled-text: var(--color-text-disabled);
+    --button-disabled-border: var(--color-border-subtle);
+
+    /* =========================================================
+     ИНПУТЫ / ФОРМЫ
+     ========================================================= */
+
+    --input-bg: var(--color-surface-3);
+    --input-bg-hover: var(--color-surface-2);
+    --input-bg-focus: var(--color-surface-3);
+    --input-text: var(--color-text);
+    --input-placeholder: var(--color-text-muted);
+    --input-border: var(--color-border);
+    --input-border-focus: var(--focus-ring);
+    --input-border-error: var(--color-error);
+    --input-border-success: var(--color-success);
+
+    /* =========================================================
+     ГРАФ: УЗЛЫ
+     ========================================================= */
+
+    --node-bg: #426349; /* #426349 | RGB 66 99 73 | HSL 133 20% 32% */
+    --node-text: #ddd6b9; /* #DDD6B9 */
+    --node-border: #9dbfa2; /* #9DBFA2 */
+
+    --node-hover-bg: #38563e; /* #38563E | RGB 56 86 62 | HSL 132 21% 28% */
+    --node-hover-text: #ddd6b9;
+    --node-hover-border: #e8cf7a; /* #E8CF7A */
+
+    --node-selected-bg: #a8c9ad; /* #A8C9AD */
+    --node-selected-text: #1f2e23; /* #1F2E23 */
+    --node-selected-border: #e8cf7a; /* #E8CF7A */
+
+    --node-simulation-bg: #c9b98a; /* #C9B98A */
+    --node-simulation-text: #1f2e23; /* #1F2E23 */
+    --node-simulation-border: #e8cf7a; /* #E8CF7A */
+
+    --node-visited-bg: #ade4b4; /* #ADE4B4 */
+    --node-visited-text: #1f2e23;
+    --node-visited-border: #7fbf8a; /* #7FBF8A */
+
+    --node-disabled-bg: #435d48; /* #435D48 */
+    --node-disabled-text: #d6d0b5;
+    --node-disabled-border: #6f8f73;
+
+    /* =========================================================
+     ГРАФ: РЁБРА
+     ========================================================= */
+
+    --edge: #9dbfa2; /* #9DBFA2 | RGB 157 191 162 | HSL 129 21% 68% */
+    --edge-hover: #c9b98a; /* #C9B98A */
+    --edge-selected: #e8cf7a; /* #E8CF7A */
+    --edge-simulation: #e8cf7a; /* #E8CF7A */
+    --edge-visited: #ade4b4; /* #ADE4B4 */
+    --edge-disabled: #6f8f73; /* #6F8F73 — только декоративно/неактивно */
+
+    --edge-label-bg: #2f4a35; /* #2F4A35 */
+    --edge-label-text: #ddd6b9; /* #DDD6B9 */
+    --edge-label-border: #9dbfa2; /* #9DBFA2 */
+
+    /* =========================================================
+     ССЫЛКИ / АКЦЕНТЫ
+     ========================================================= */
+
+    --link: var(--color-primary-text);
+    --link-hover: var(--color-primary-hover);
+    --link-active: var(--color-primary-active);
+
+    --badge-success-bg: var(--color-success);
+    --badge-success-text: var(--color-on-success);
+    --badge-warning-bg: var(--color-warning);
+    --badge-warning-text: var(--color-on-warning);
+    --badge-error-bg: var(--color-error);
+    --badge-error-text: var(--color-on-error);
+}
