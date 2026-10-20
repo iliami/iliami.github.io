@@ -5,7 +5,12 @@ export const STEP_TYPE = Object.freeze({
     vertex: "vertex",
 });
 
-export const createVertex = (id, x, y) => ({ id, x, y });
+export const createVertex = (id, x, y, label = id) => ({
+    id,
+    x,
+    y,
+    label,
+});
 
 export const createEdge = (id, fromId, toId) => ({ id, fromId, toId });
 
@@ -27,6 +32,29 @@ export const moveVertex = (graph, vertexId, { x, y }) => ({
         vertex.id === vertexId ? { ...vertex, x, y } : vertex,
     ),
 });
+
+export const removeVertex = (graph, vertexId) => ({
+    vertices: graph.vertices.filter((vertex) => vertex.id !== vertexId),
+    edges: graph.edges.filter(
+        (edge) => edge.fromId !== vertexId && edge.toId !== vertexId,
+    ),
+});
+
+export const removeEdge = (graph, edgeId) => ({
+    ...graph,
+    edges: graph.edges.filter((edge) => edge.id !== edgeId),
+});
+
+export const renameVertex = (graph, vertexId, label) => ({
+    ...graph,
+    vertices: graph.vertices.map((vertex) =>
+        vertex.id === vertexId
+            ? { ...vertex, label: label.trim() || vertex.id }
+            : vertex,
+    ),
+});
+
+export const getVertexLabel = (vertex) => vertex.label ?? vertex.id;
 
 export const getVertex = (graph, vertexId) =>
     graph.vertices.find((vertex) => vertex.id === vertexId);
@@ -104,16 +132,40 @@ export const getAdjacencyMatrix = (graph) => {
 export const getAdjacencyList = (graph) =>
     graph.vertices.map((vertex) => getNeighbors(graph, vertex.id));
 
-const createEdgeStep = (graph, firstVertexId, secondVertexId) => {
+export const getIncidenceMatrix = (graph) => {
+    const vertexIndexes = new Map(
+        graph.vertices.map((vertex, index) => [vertex.id, index]),
+    );
+    const matrix = graph.vertices.map(() => Array(graph.edges.length).fill(0));
+
+    graph.edges.forEach((edge, columnIndex) => {
+        const firstIndex = vertexIndexes.get(edge.fromId);
+        const secondIndex = vertexIndexes.get(edge.toId);
+
+        if (firstIndex !== undefined) {
+            matrix[firstIndex][columnIndex] = 1;
+        }
+
+        if (secondIndex !== undefined) {
+            matrix[secondIndex][columnIndex] = 1;
+        }
+    });
+
+    return matrix;
+};
+
+const createEdgeStep = (graph, firstVertexId, secondVertexId, line) => {
     const edge = findEdgeBetween(graph, firstVertexId, secondVertexId);
-    return edge ? { type: STEP_TYPE.edge, edgeId: edge.id } : null;
+    return edge ? { type: STEP_TYPE.edge, edgeId: edge.id, line } : null;
 };
 
 export const bfsTraversal = (graph, startVertexId) => {
     const visited = [startVertexId];
     const visitedSet = new Set(visited);
     const queue = [startVertexId];
-    const steps = [{ type: STEP_TYPE.vertex, vertexId: startVertexId }];
+    const steps = [
+        { type: STEP_TYPE.vertex, vertexId: startVertexId, line: 2 },
+    ];
 
     while (queue.length > 0) {
         const currentVertexId = queue.shift();
@@ -131,6 +183,7 @@ export const bfsTraversal = (graph, startVertexId) => {
                 graph,
                 currentVertexId,
                 nextVertexId,
+                10,
             );
 
             if (edgeStep) {
@@ -140,6 +193,7 @@ export const bfsTraversal = (graph, startVertexId) => {
             steps.push({
                 type: STEP_TYPE.vertex,
                 vertexId: nextVertexId,
+                line: 11,
             });
         }
     }
@@ -165,6 +219,7 @@ export const dfsTraversal = (graph, startVertexId) => {
                 graph,
                 previousVertexId,
                 vertexId,
+                7,
             );
 
             if (edgeStep) {
@@ -172,7 +227,7 @@ export const dfsTraversal = (graph, startVertexId) => {
             }
         }
 
-        steps.push({ type: STEP_TYPE.vertex, vertexId });
+        steps.push({ type: STEP_TYPE.vertex, vertexId, line: 8 });
 
         for (const nextVertexId of getNeighbors(graph, vertexId).reverse()) {
             visit(nextVertexId, vertexId);

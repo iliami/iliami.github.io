@@ -1,102 +1,377 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="./styles/style.css">
-    <title>BFS and DFS visualization</title>
+    <title>Graph Studio — редактор и визуализация графов</title>
 </head>
 
 <body>
-    <dialog>
-        <div id="graph_info_modal_box">
-            <div id="graph_info_modal_content"></div>
-            <button id="close_graph_info_modal">Закрыть</button>
-        </div>
-    </dialog>
-    <main>
-        <div class="menu">
-            <div class="menu_item">
-                <div class="download_graph">
-                    <a id="download_graph" class="btn">
-                        Выгрузить граф
-                    </a>
+    <div class="app">
+        <header class="app_header glass">
+            <div class="brand">
+                <span class="brand_mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <circle cx="5" cy="12" r="2.4" stroke="currentColor" stroke-width="1.6" />
+                        <circle cx="19" cy="5" r="2.4" stroke="currentColor" stroke-width="1.6" />
+                        <circle cx="19" cy="19" r="2.4" stroke="currentColor" stroke-width="1.6" />
+                        <path d="M7.2 11.2 16.8 5.8M7.2 12.8l9.6 5.4" stroke="currentColor"
+                            stroke-width="1.6" stroke-linecap="round" />
+                    </svg>
+                </span>
+                <div class="brand_text">
+                    <h1>Graph Studio</h1>
+                    <p>редактор и визуализация алгоритмов</p>
                 </div>
-                <div class="upload_graph">
+            </div>
+            <div class="header_hint">
+                <span><kbd>Двойной клик</kbd> вершина</span>
+                <span class="hint_sep"></span>
+                <span><kbd>Shift</kbd> + drag ребро</span>
+                <span class="hint_sep"></span>
+                <span><kbd>Колесо</kbd> зум</span>
+            </div>
+            <div class="header_status">
+                <span class="status_dot"></span>
+                <span id="app_status">Готово</span>
+            </div>
+        </header>
+
+        <aside class="panel left_panel glass">
+            <section class="panel_section">
+                <div class="section_head">
+                    <h2>Файл</h2>
+                    <span class="section_note">импорт / экспорт</span>
+                </div>
+                <div class="file_actions">
                     <div>
-                        <input type="file" id="upload_graph" accept=".graph">
-                        <label for="upload_graph" class="btn">
-                            Загрузить граф
+                        <input type="file" id="upload_graph" accept=".graph,.svg" class="visually_hidden">
+                        <label for="upload_graph" class="btn btn_secondary">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M12 16V5m0 0L8 9m4-4 4 4" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M5 15v2.5A1.5 1.5 0 0 0 6.5 19h11a1.5 1.5 0 0 0 1.5-1.5V15"
+                                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                            </svg>
+                            Импорт
                         </label>
                     </div>
+                    <div class="dropdown" id="export_dropdown">
+                        <button type="button" id="export_toggle" class="btn btn_primary" aria-haspopup="true"
+                            aria-expanded="false">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M12 5v11m0 0 4-4m-4 4-4-4" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M5 15v2.5A1.5 1.5 0 0 0 6.5 19h11a1.5 1.5 0 0 0 1.5-1.5V15"
+                                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                            </svg>
+                            Экспорт
+                        </button>
+                        <div class="dropdown_menu" id="export_menu" role="menu">
+                            <a id="download_graph" href="#" download="graph.graph" class="dropdown_item" role="menuitem">
+                                <span>SVG / Graph</span>
+                                <span class="format_tag">.graph</span>
+                            </a>
+                            <button type="button" class="dropdown_item" disabled role="menuitem">
+                                <span>JSON</span>
+                                <span class="soon">скоро</span>
+                            </button>
+                            <button type="button" class="dropdown_item" disabled role="menuitem">
+                                <span>CSV / TXT</span>
+                                <span class="soon">скоро</span>
+                            </button>
+                            <button type="button" class="dropdown_item" disabled role="menuitem">
+                                <span>Graphviz DOT</span>
+                                <span class="soon">скоро</span>
+                            </button>
+                            <button type="button" class="dropdown_item" disabled role="menuitem">
+                                <span>PNG</span>
+                                <span class="soon">скоро</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="menu_item">
-                <div class="vertex_num">
-                    <label for="vertex_num">Номер вершины: </label>
-                    <select name="vertex_num" id="vertex_num" style="width: 64px;">
+            </section>
+
+            <section class="panel_section">
+                <div class="section_head">
+                    <h2>Алгоритмы</h2>
+                    <span class="badge">BFS · DFS</span>
+                </div>
+                <div class="start_vertex">
+                    <label for="vertex_num">Стартовая вершина</label>
+                    <select name="vertex_num" id="vertex_num" disabled>
                     </select>
                 </div>
-                <div class="bfs_start">
-                    <button type="button" id="BFS_start" class="btn" disabled>
-                        Запустить обход в ширину
+                <div class="algorithm_list">
+                    <button type="button" id="BFS_start" class="algorithm_card" disabled>
+                        <span class="algorithm_icon algorithm_icon_blue" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="5" r="2.2" stroke="currentColor" stroke-width="1.6" />
+                                <circle cx="5" cy="19" r="2.2" stroke="currentColor" stroke-width="1.6" />
+                                <circle cx="19" cy="19" r="2.2" stroke="currentColor" stroke-width="1.6" />
+                                <path d="M12 7.2 6 17M12 7.2 18 17" stroke="currentColor" stroke-width="1.6"
+                                    stroke-linecap="round" />
+                            </svg>
+                        </span>
+                        <span class="algorithm_body">
+                            <span class="algorithm_title">Обход в ширину <span class="algo_badge">BFS</span></span>
+                            <span class="algorithm_desc">Очередь · O(V + E)</span>
+                        </span>
+                        <span class="algorithm_play" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5.5v13l11-6.5-11-6.5Z" />
+                            </svg>
+                        </span>
+                    </button>
+                    <button type="button" id="DFS_start" class="algorithm_card" disabled>
+                        <span class="algorithm_icon algorithm_icon_violet" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <circle cx="6" cy="5" r="2.2" stroke="currentColor" stroke-width="1.6" />
+                                <circle cx="6" cy="19" r="2.2" stroke="currentColor" stroke-width="1.6" />
+                                <circle cx="18" cy="12" r="2.2" stroke="currentColor" stroke-width="1.6" />
+                                <path d="M7.8 6.2 16.2 10.8M7.8 17.8l8.4-4.6" stroke="currentColor"
+                                    stroke-width="1.6" stroke-linecap="round" />
+                            </svg>
+                        </span>
+                        <span class="algorithm_body">
+                            <span class="algorithm_title">Обход в глубину <span class="algo_badge">DFS</span></span>
+                            <span class="algorithm_desc">Рекурсия · O(V + E)</span>
+                        </span>
+                        <span class="algorithm_play" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5.5v13l11-6.5-11-6.5Z" />
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="algorithm_card is_disabled" aria-disabled="true">
+                        <span class="algorithm_icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M4 18 10 6l4 8 3-5 3 9" stroke="currentColor" stroke-width="1.6"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                        <span class="algorithm_body">
+                            <span class="algorithm_title">Дейкстра</span>
+                            <span class="algorithm_desc">Кратчайшие пути · веса</span>
+                        </span>
+                        <span class="soon">скоро</span>
+                    </div>
+                    <div class="algorithm_card is_disabled" aria-disabled="true">
+                        <span class="algorithm_icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M5 7h14M5 12h14M5 17h9" stroke="currentColor" stroke-width="1.6"
+                                    stroke-linecap="round" />
+                            </svg>
+                        </span>
+                        <span class="algorithm_body">
+                            <span class="algorithm_title">Беллман-Форд</span>
+                            <span class="algorithm_desc">Кратчайшие пути · веса</span>
+                        </span>
+                        <span class="soon">скоро</span>
+                    </div>
+                    <div class="algorithm_card is_disabled" aria-disabled="true">
+                        <span class="algorithm_icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="1.6"
+                                    stroke-linecap="round" />
+                            </svg>
+                        </span>
+                        <span class="algorithm_body">
+                            <span class="algorithm_title">Краскал</span>
+                            <span class="algorithm_desc">Минимальное остовное дерево</span>
+                        </span>
+                        <span class="soon">скоро</span>
+                    </div>
+                </div>
+                <div class="results">
+                    <div class="result_row">
+                        <span class="result_label">BFS</span>
+                        <p id="BFS_result">Запустите обход, чтобы увидеть порядок вершин.</p>
+                    </div>
+                    <div class="result_row">
+                        <span class="result_label">DFS</span>
+                        <p id="DFS_result">Запустите обход, чтобы увидеть порядок вершин.</p>
+                    </div>
+                </div>
+                <button type="button" id="default_colors" class="btn btn_ghost btn_wide" disabled>
+                    Сбросить цвета и плеер
+                </button>
+            </section>
+
+            <section class="panel_section panel_section_grow">
+                <div class="section_head">
+                    <h2>Инструменты</h2>
+                    <span class="section_note">режим холста</span>
+                </div>
+                <form class="form_mode segmented">
+                    <div class="form_mode_field">
+                        <input type="radio" name="mode" id="default" checked>
+                        <label for="default" class="btn">Выбор</label>
+                    </div>
+                    <div class="form_mode_field">
+                        <input type="radio" name="mode" id="vertex">
+                        <label for="vertex" class="btn">Вершина</label>
+                    </div>
+                    <div class="form_mode_field">
+                        <input type="radio" name="mode" id="edge">
+                        <label for="edge" class="btn">Ребро</label>
+                    </div>
+                </form>
+                <div class="tool_hints">
+                    <p><kbd>Двойной клик</kbd> по холсту создаёт вершину.</p>
+                    <p><kbd>Shift</kbd> + перетаскивание от узла к узлу создаёт ребро.</p>
+                    <p><kbd>Пробел</kbd> + drag или средняя кнопка панорамируют.</p>
+                    <p>Правый клик по узлу или ребру открывает меню.</p>
+                </div>
+                <div class="legend">
+                    <span><i class="legend_dot legend_dot_default"></i>Вершина</span>
+                    <span><i class="legend_dot legend_dot_visited"></i>Пройдено</span>
+                    <span><i class="legend_dot legend_dot_active"></i>Активная</span>
+                </div>
+            </section>
+        </aside>
+
+        <section class="workspace">
+            <div class="canvas_container glass" id="canvas_surface">
+                <svg id="canvas" width="100%" height="100%" viewBox="0 0 1000 600" aria-label="Холст графа">
+                </svg>
+                <div class="canvas_toolbar glass">
+                    <button type="button" id="zoom_out" class="icon_btn" title="Уменьшить" aria-label="Уменьшить">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                    <span id="zoom_level" class="zoom_level">100%</span>
+                    <button type="button" id="zoom_in" class="icon_btn" title="Увеличить" aria-label="Увеличить">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8"
+                                stroke-linecap="round" />
+                        </svg>
+                    </button>
+                    <span class="toolbar_sep"></span>
+                    <button type="button" id="fit_view" class="icon_btn" title="Показать весь граф"
+                        aria-label="Показать весь граф">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4" stroke="currentColor"
+                                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
                     </button>
                 </div>
-                <div class="bfs_result">
-                    <p id="BFS_result">Здесь будет результат обхода в ширину</p>
+                <div class="canvas_hint">
+                    <kbd>Двойной клик</kbd> вершина · <kbd>Shift</kbd> + drag ребро · <kbd>Колесо</kbd> зум ·
+                    <kbd>Пробел</kbd> панорама
                 </div>
-                <div class="dfs_start">
-                    <button type="button" id="DFS_start" class="btn" disabled>
-                        Запустить обход в глубину
-                    </button>
-                </div>
-                <div class="dfs_result">
-                    <p id="DFS_result">Здесь будет результат обхода в глубину</p>
-                </div>
-            </div>
-            <div class="menu_item">
-                <div class="ret_default_colors">
-                    <button type="button" id="default_colors" class="btn" disabled>
-                        Вернуть исходные цвета
-                    </button>
-                </div>
-            </div>
-        </div>
-        </div>
-        <div class="canvas_container">
-            <div class="menu_item canvas_menu">
-                <div class="left_canvas_menu_item">
-                    <form class="form_mode">
-                        <span>Режим: </span>
-                        <div class="form_mode_field">
-                            <input type="radio" name="mode" id="default" checked>
-                            <label for="default" class="btn">По умолчанию</label>
-                        </div>
-                        <div class="form_mode_field">
-                            <input type="radio" name="mode" id="vertex">
-                            <label for="vertex" class="btn">Добавление вершин</label>
-                        </div>
-                        <div class="form_mode_field">
-                            <input type="radio" name="mode" id="edge">
-                            <label for="edge" class="btn">Добавление рёбер</label>
-                        </div>
-                    </form>
-                </div>
-                <div class="right_canvas_menu_item">
-                    <div class="show_graph_info">
-                        <button type="button" id="show_graph_info_modal" class="btn">
-                            Представление графа
+                <div class="player glass">
+                    <div class="player_controls">
+                        <button type="button" id="step_back" class="icon_btn" title="Шаг назад"
+                            aria-label="Шаг назад" disabled>
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M6 5v14" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round" />
+                                <path d="M18 6 9 12l9 6V6Z" fill="currentColor" />
+                            </svg>
                         </button>
+                        <button type="button" id="play_pause" class="icon_btn icon_btn_primary"
+                            title="Воспроизвести" aria-label="Воспроизвести" disabled>
+                            <span class="icon_play" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5.5v13l11-6.5-11-6.5Z" />
+                                </svg>
+                            </span>
+                            <span class="icon_pause" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <rect x="7" y="5" width="3.5" height="14" rx="1" />
+                                    <rect x="13.5" y="5" width="3.5" height="14" rx="1" />
+                                </svg>
+                            </span>
+                        </button>
+                        <button type="button" id="step_forward" class="icon_btn" title="Шаг вперёд"
+                            aria-label="Шаг вперёд" disabled>
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M18 5v14" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round" />
+                                <path d="M6 6l9 6-9 6V6Z" fill="currentColor" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="player_timeline">
+                        <input type="range" id="player_progress" min="0" max="0" step="1" value="0"
+                            aria-label="Позиция воспроизведения" disabled>
+                        <div class="player_meta">
+                            <span id="player_status">Готово</span>
+                            <span id="player_step">0 / 0</span>
+                        </div>
+                    </div>
+                    <div class="speed">
+                        <label for="speed">Скорость</label>
+                        <input type="range" id="speed" min="0.1" max="3" step="0.1" value="1"
+                            aria-label="Скорость воспроизведения">
+                        <span id="speed_value">1.0×</span>
                     </div>
                 </div>
             </div>
-            <div id="canvas_container">
-                <svg id="canvas" height="600" width="1000" viewBox="0 0 1000 600">
-                </svg>
-            </div>
+        </section>
+
+        <aside class="panel right_panel glass">
+            <section class="panel_section">
+                <div class="section_head">
+                    <h2>Структура</h2>
+                    <span id="graph_stats" class="section_note">0 вершин · 0 рёбер</span>
+                </div>
+                <div class="tabs" role="tablist" aria-label="Представление графа">
+                    <button type="button" class="tab is_active" data-view="matrix" id="tab_matrix"
+                        role="tab" aria-selected="true">Матрица смежности</button>
+                    <button type="button" class="tab" data-view="list" id="tab_list" role="tab"
+                        aria-selected="false">Список смежности</button>
+                    <button type="button" class="tab" data-view="incidence" id="tab_incidence" role="tab"
+                        aria-selected="false">Матрица инцидентности</button>
+                </div>
+                <div class="data_panel" id="graph_info_content"></div>
+            </section>
+
+            <section class="panel_section right_panel_grow">
+                <div class="section_head">
+                    <h2>Псевдокод</h2>
+                    <span id="pseudocode_title" class="badge">BFS</span>
+                </div>
+                <div class="pseudocode" id="pseudocode"></div>
+                <div class="section_head log_head">
+                    <h2>Лог алгоритма</h2>
+                    <button type="button" id="clear_log" class="ghost_small">Очистить</button>
+                </div>
+                <div class="algorithm_log" id="algorithm_log"></div>
+            </section>
+        </aside>
+
+        <div id="context_menu" class="context_menu glass" hidden>
+            <button type="button" data-action="rename">Переименовать</button>
+            <button type="button" data-action="weight" disabled>
+                <span>Вес ребра</span>
+                <span class="soon">скоро</span>
+            </button>
+            <span class="context_sep"></span>
+            <button type="button" data-action="delete" class="context_danger">Удалить</button>
         </div>
-    </main>
+
+        <dialog id="rename_dialog" class="modal">
+            <form method="dialog" id="rename_form">
+                <h2>Имя вершины</h2>
+                <input id="rename_input" maxlength="24" autocomplete="off" spellcheck="false">
+                <div class="modal_actions">
+                    <button type="button" id="rename_cancel" class="btn btn_ghost">Отмена</button>
+                    <button type="submit" value="save" class="btn btn_primary">Сохранить</button>
+                </div>
+            </form>
+        </dialog>
+    </div>
     <script src="./scripts/script.js" type="module"></script>
 </body>
 
