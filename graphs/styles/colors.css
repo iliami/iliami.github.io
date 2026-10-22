@@ -2,203 +2,164 @@
     color-scheme: dark;
 
     /* =========================================================
-     БАЗОВЫЕ ПОВЕРХНОСТИ
-     ========================================================= */
+       ПОВЕРХНОСТИ
+       ========================================================= */
 
-    --color-bg: #121214;
-    --color-surface-1: #19191e;
-    --color-surface-2: #1e1e24;
-    --color-surface-3: #151519;
+    --canvas-bg: #0f0f11;
+    --panel-bg: #1e1e1e;
+    --panel-bg-alt: #252526;
+    --panel-bg-raised: #2a2a2b;
+    --panel-bg-hover: #2d2d2e;
+    --panel-bg-active: #333334;
 
-    --color-surface-hover: #23232b;
-    --color-surface-active: #2a2a34;
-
-    --color-overlay: rgb(10 10 12 / 0.72);
-    --shadow-color: rgb(0 0 0 / 0.55);
-
-    --canvas-bg: #0e0e12;
-    --grid-dot: rgb(255 255 255 / 0.13);
-    --panel-hover: rgb(255 255 255 / 0.04);
+    --grid-dot: rgb(255 255 255 / 0.055);
+    --overlay-bg: rgb(0 0 0 / 0.62);
 
     /* =========================================================
-     ТЕКСТ
-     ========================================================= */
+       ГРАНИЦЫ
+       ========================================================= */
 
-    --color-text: #e8e8ee;
-    --color-text-rgb: 232 232 238;
-    --color-text-hsl: 240 15% 92%;
-
-    --color-text-muted: #9a9aa8;
-    --color-text-inverse: #0f0f12;
-
-    --color-text-disabled: #5c5c6a;
-    --color-text-on-accent: #ffffff;
+    --border: #3c3c3c;
+    --border-strong: #505050;
+    --border-subtle: #2a2a2a;
 
     /* =========================================================
-     ГРАНИЦЫ И ФОКУС
-     ========================================================= */
+       ТЕКСТ
+       ========================================================= */
 
-    --color-border: rgb(255 255 255 / 0.08);
-    --color-border-strong: rgb(255 255 255 / 0.15);
-    --color-border-subtle: rgb(255 255 255 / 0.05);
-
-    --focus-ring: #8b7bff;
-    --focus-ring-offset: #121214;
-    --focus-ring-width: 2px;
-
-    --selection-bg: #5b8cff;
-    --selection-text: #ffffff;
+    --color-text: #d4d4d4;
+    --color-text-strong: #f0f0f0;
+    --color-text-muted: #8c8c8c;
+    --color-text-disabled: #5a5a5a;
+    --selection-bg: #264f2e;
+    --selection-text: #f5fff7;
 
     /* =========================================================
-     СЕМАНТИЧЕСКИЕ ЦВЕТА
-     ========================================================= */
+       АКЦЕНТЫ
+       ========================================================= */
 
-    --color-primary: #7c6cff;
-    --color-primary-hover: #9184ff;
-    --color-primary-active: #6a5bea;
-    --color-primary-text: #b9b1ff;
-    --color-on-primary: #ffffff;
+    --accent: #4caf50;
+    --accent-hover: #66bb6a;
+    --accent-active: #388e3c;
+    --accent-dim: rgb(76 175 80 / 0.14);
+    --accent-text: #81c784;
 
-    --color-secondary: #5b8cff;
-    --color-secondary-hover: #79a1ff;
-    --color-secondary-active: #4778ea;
-    --color-secondary-text: #a8c1ff;
-    --color-on-secondary: #ffffff;
+    --danger: #f44336;
+    --danger-hover: #ef5350;
+    --danger-dim: rgb(244 67 54 / 0.14);
+    --danger-text: #ef9a9a;
 
-    --color-success: #3ddc84;
-    --color-success-text: #9bf0be;
-    --color-on-success: #062014;
+    --warning: #ffc107;
+    --warning-dim: rgb(255 193 7 / 0.12);
+    --warning-text: #ffe082;
 
-    --color-warning: #ffd166;
-    --color-warning-text: #ffe6a3;
-    --color-on-warning: #2a1f04;
+    --info: #64b5f6;
+    --info-dim: rgb(100 181 246 / 0.12);
 
-    --color-error: #ff5d73;
-    --color-error-hover: #ff8092;
-    --color-error-active: #e94860;
-    --color-error-text: #ffb3bd;
-    --color-on-error: #2a0710;
-
-    --accent-blue: #5b8cff;
-    --accent-violet: #a78bfa;
-    --accent-green: #3ddc84;
-    --accent-red: #ff5d73;
-    --accent-yellow: #ffd166;
-    --accent-glow: rgb(91 140 255 / 0.35);
+    --focus-ring: #4caf50;
 
     /* =========================================================
-     КНОПКИ: ТОКЕНЫ СОСТОЯНИЙ
-     ========================================================= */
+       ТИПОГРАФИКА
+       ========================================================= */
 
-    --button-primary-bg: #7c6cff;
-    --button-primary-bg-hover: #9184ff;
-    --button-primary-bg-active: #6a5bea;
-    --button-primary-text: #ffffff;
-    --button-primary-border: transparent;
-
-    --button-secondary-bg: #23232b;
-    --button-secondary-bg-hover: #2c2c38;
-    --button-secondary-bg-active: #33333f;
-    --button-secondary-text: var(--color-text);
-    --button-secondary-border: var(--color-border);
-
-    --button-neutral-bg: var(--color-surface-1);
-    --button-neutral-bg-hover: var(--color-surface-hover);
-    --button-neutral-bg-active: var(--color-surface-active);
-    --button-neutral-text: var(--color-text);
-    --button-neutral-border: var(--color-border);
-
-    --button-ghost-bg: transparent;
-    --button-ghost-bg-hover: rgb(255 255 255 / 0.06);
-    --button-ghost-bg-active: rgb(255 255 255 / 0.1);
-    --button-ghost-text: var(--color-text-muted);
-    --button-ghost-border: transparent;
-
-    --button-danger-bg: var(--color-error);
-    --button-danger-bg-hover: var(--color-error-hover);
-    --button-danger-bg-active: var(--color-error-active);
-    --button-danger-text: var(--color-on-error);
-    --button-danger-border: transparent;
-
-    --button-disabled-bg: #202027;
-    --button-disabled-text: #5f5f6e;
-    --button-disabled-border: rgb(255 255 255 / 0.05);
+    --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", "Fira Code", Consolas, ui-monospace, monospace;
 
     /* =========================================================
-     ИНПУТЫ / ФОРМЫ
-     ========================================================= */
+       КНОПКИ
+       ========================================================= */
 
-    --input-bg: #101014;
-    --input-bg-hover: #16161b;
-    --input-bg-focus: #101014;
-    --input-text: var(--color-text);
-    --input-placeholder: var(--color-text-muted);
-    --input-border: var(--color-border);
-    --input-border-focus: var(--focus-ring);
-    --input-border-error: var(--color-error);
-    --input-border-success: var(--color-success);
+    --button-bg: #2d2d2d;
+    --button-bg-hover: #383838;
+    --button-bg-active: #424242;
+    --button-border: #3c3c3c;
+    --button-text: #d4d4d4;
 
-    /* =========================================================
-     ГРАФ: УЗЛЫ
-     ========================================================= */
+    --button-primary-bg: #4caf50;
+    --button-primary-bg-hover: #66bb6a;
+    --button-primary-bg-active: #388e3c;
+    --button-primary-text: #0d1a0f;
+    --button-primary-border: #4caf50;
 
-    --node-bg: #292940;
-    --node-text: #eaeaf2;
-    --node-border: #4d4d70;
-
-    --node-hover-bg: #333353;
-    --node-hover-text: #f3f3fa;
-    --node-hover-border: #7c6cff;
-
-    --node-selected-bg: #7c6cff;
-    --node-selected-text: #ffffff;
-    --node-selected-border: #a79dff;
-
-    --node-simulation-bg: #3ddc84;
-    --node-simulation-text: #062014;
-    --node-simulation-border: #6ff0a7;
-
-    --node-visited-bg: #2ecc71;
-    --node-visited-text: #062014;
-    --node-visited-border: #5ff09b;
-
-    --node-active-bg: #ff5d73;
-    --node-active-text: #2a0710;
-    --node-active-border: #ff9aa8;
-
-    --node-disabled-bg: #202027;
-    --node-disabled-text: #5f5f6e;
-    --node-disabled-border: rgb(255 255 255 / 0.06);
+    --button-disabled-bg: #262626;
+    --button-disabled-text: #5a5a5a;
+    --button-disabled-border: #303030;
 
     /* =========================================================
-     ГРАФ: РЁБРА
-     ========================================================= */
+       ИНПУТЫ
+       ========================================================= */
 
-    --edge: #4b4b63;
-    --edge-hover: #7b7b9c;
-    --edge-selected: #a78bfa;
-    --edge-simulation: #5b8cff;
-    --edge-visited: #5b8cff;
-    --edge-active: #ff5d73;
-    --edge-preview: #7c6cff;
-    --edge-disabled: #30303e;
-
-    --edge-label-bg: #1a1a20;
-    --edge-label-text: #e8e8ee;
-    --edge-label-border: rgb(255 255 255 / 0.12);
+    --input-bg: #141414;
+    --input-bg-hover: #181818;
+    --input-text: #d4d4d4;
+    --input-border: #3c3c3c;
+    --input-border-focus: #4caf50;
 
     /* =========================================================
-     ССЫЛКИ / АКЦЕНТЫ
-     ========================================================= */
+       ГРАФ: УЗЛЫ
+       ========================================================= */
 
-    --link: var(--color-primary-text);
-    --link-hover: var(--color-primary-hover);
-    --link-active: var(--color-primary-active);
+    --node-bg: #1b1b1b;
+    --node-text: #e6e6e6;
+    --node-border: #4a4a4a;
 
-    --badge-success-bg: var(--color-success);
-    --badge-success-text: var(--color-on-success);
-    --badge-warning-bg: var(--color-warning);
-    --badge-warning-text: var(--color-on-warning);
-    --badge-error-bg: var(--color-error);
-    --badge-error-text: var(--color-on-error);
+    --node-hover-bg: #222222;
+    --node-hover-text: #ffffff;
+    --node-hover-border: #4caf50;
+
+    --node-selected-bg: #1d3325;
+    --node-selected-text: #eafff0;
+    --node-selected-border: #4caf50;
+
+    --node-simulation-bg: #1d3325;
+    --node-simulation-text: #eafff0;
+    --node-simulation-border: #4caf50;
+
+    --node-visited-bg: #1b3a24;
+    --node-visited-text: #c8f5d5;
+    --node-visited-border: #4caf50;
+
+    --node-active-bg: #3a2d05;
+    --node-active-text: #ffe9a8;
+    --node-active-border: #ffc107;
+
+    --node-disabled-bg: #202020;
+    --node-disabled-text: #5a5a5a;
+    --node-disabled-border: #303030;
+
+    /* =========================================================
+       ГРАФ: РЁБРА
+       ========================================================= */
+
+    --edge: #414141;
+    --edge-hover: #7a7a7a;
+    --edge-highlight: #4caf50;
+    --edge-selected: #4caf50;
+    --edge-simulation: #4caf50;
+    --edge-visited: #4caf50;
+    --edge-active: #ffc107;
+    --edge-preview: #4caf50;
+    --edge-disabled: #2f2f2f;
+
+    --edge-label-bg: #1a1a1a;
+    --edge-label-text: #e6e6e6;
+    --edge-label-border: #3c3c3c;
+
+    /* =========================================================
+       ССЫЛКИ / БЕЙДЖИ
+       ========================================================= */
+
+    --link: var(--accent-text);
+    --link-hover: var(--accent-hover);
+
+    --badge-bg: #2a2a2b;
+    --badge-text: #a8a8a8;
+    --badge-border: #3c3c3c;
+
+    --badge-success-bg: var(--accent);
+    --badge-success-text: #0d1a0f;
+    --badge-warning-bg: var(--warning);
+    --badge-warning-text: #2a1f04;
+    --badge-error-bg: var(--danger);
+    --badge-error-text: #2a0707;
 }

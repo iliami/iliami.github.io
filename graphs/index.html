@@ -10,277 +10,65 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="./styles/style.css">
-    <title>Graph Studio — редактор и визуализация графов</title>
+    <title>Graph Studio — workbench для графов</title>
 </head>
 
 <body>
-    <div class="app">
-        <header class="app_header glass">
-            <div class="brand">
-                <span class="brand_mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none">
-                        <circle cx="5" cy="12" r="2.4" stroke="currentColor" stroke-width="1.6" />
-                        <circle cx="19" cy="5" r="2.4" stroke="currentColor" stroke-width="1.6" />
-                        <circle cx="19" cy="19" r="2.4" stroke="currentColor" stroke-width="1.6" />
-                        <path d="M7.2 11.2 16.8 5.8M7.2 12.8l9.6 5.4" stroke="currentColor"
-                            stroke-width="1.6" stroke-linecap="round" />
-                    </svg>
-                </span>
-                <div class="brand_text">
-                    <h1>Graph Studio</h1>
-                    <p>редактор и визуализация алгоритмов</p>
-                </div>
-            </div>
-            <div class="header_hint">
-                <span><kbd>Двойной клик</kbd> вершина</span>
-                <span class="hint_sep"></span>
-                <span><kbd>Shift</kbd> + drag ребро</span>
-                <span class="hint_sep"></span>
-                <span><kbd>Колесо</kbd> зум</span>
-            </div>
-            <div class="header_status">
-                <span class="status_dot"></span>
-                <span id="app_status">Готово</span>
-            </div>
-        </header>
+    <div class="app" id="app">
+        <main class="canvas_container" id="canvas_surface">
+            <svg id="canvas" width="100%" height="100%" viewBox="0 0 1000 600" tabindex="0"
+                aria-label="Холст графа"></svg>
 
-        <aside class="panel left_panel glass">
-            <section class="panel_section">
-                <div class="section_head">
-                    <h2>Файл</h2>
-                    <span class="section_note">импорт / экспорт</span>
-                </div>
-                <div class="file_actions">
-                    <div>
-                        <input type="file" id="upload_graph" accept=".graph,.svg" class="visually_hidden">
-                        <label for="upload_graph" class="btn btn_secondary">
-                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M12 16V5m0 0L8 9m4-4 4 4" stroke="currentColor" stroke-width="1.8"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M5 15v2.5A1.5 1.5 0 0 0 6.5 19h11a1.5 1.5 0 0 0 1.5-1.5V15"
-                                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                            </svg>
-                            Импорт
-                        </label>
-                    </div>
-                    <div class="dropdown" id="export_dropdown">
-                        <button type="button" id="export_toggle" class="btn btn_primary" aria-haspopup="true"
-                            aria-expanded="false">
-                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M12 5v11m0 0 4-4m-4 4-4-4" stroke="currentColor" stroke-width="1.8"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M5 15v2.5A1.5 1.5 0 0 0 6.5 19h11a1.5 1.5 0 0 0 1.5-1.5V15"
-                                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                            </svg>
-                            Экспорт
-                        </button>
-                        <div class="dropdown_menu" id="export_menu" role="menu">
-                            <a id="download_graph" href="#" download="graph.graph" class="dropdown_item" role="menuitem">
-                                <span>SVG / Graph</span>
-                                <span class="format_tag">.graph</span>
-                            </a>
-                            <button type="button" class="dropdown_item" disabled role="menuitem">
-                                <span>JSON</span>
-                                <span class="soon">скоро</span>
-                            </button>
-                            <button type="button" class="dropdown_item" disabled role="menuitem">
-                                <span>CSV / TXT</span>
-                                <span class="soon">скоро</span>
-                            </button>
-                            <button type="button" class="dropdown_item" disabled role="menuitem">
-                                <span>Graphviz DOT</span>
-                                <span class="soon">скоро</span>
-                            </button>
-                            <button type="button" class="dropdown_item" disabled role="menuitem">
-                                <span>PNG</span>
-                                <span class="soon">скоро</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="panel_section">
-                <div class="section_head">
-                    <h2>Алгоритмы</h2>
-                    <span class="badge">BFS · DFS</span>
-                </div>
-                <div class="start_vertex">
-                    <label for="vertex_num">Стартовая вершина</label>
-                    <select name="vertex_num" id="vertex_num" disabled>
-                    </select>
-                </div>
-                <div class="algorithm_list">
-                    <button type="button" id="BFS_start" class="algorithm_card" disabled>
-                        <span class="algorithm_icon algorithm_icon_blue" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <circle cx="12" cy="5" r="2.2" stroke="currentColor" stroke-width="1.6" />
-                                <circle cx="5" cy="19" r="2.2" stroke="currentColor" stroke-width="1.6" />
-                                <circle cx="19" cy="19" r="2.2" stroke="currentColor" stroke-width="1.6" />
-                                <path d="M12 7.2 6 17M12 7.2 18 17" stroke="currentColor" stroke-width="1.6"
-                                    stroke-linecap="round" />
-                            </svg>
-                        </span>
-                        <span class="algorithm_body">
-                            <span class="algorithm_title">Обход в ширину <span class="algo_badge">BFS</span></span>
-                            <span class="algorithm_desc">Очередь · O(V + E)</span>
-                        </span>
-                        <span class="algorithm_play" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8 5.5v13l11-6.5-11-6.5Z" />
-                            </svg>
-                        </span>
-                    </button>
-                    <button type="button" id="DFS_start" class="algorithm_card" disabled>
-                        <span class="algorithm_icon algorithm_icon_violet" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <circle cx="6" cy="5" r="2.2" stroke="currentColor" stroke-width="1.6" />
-                                <circle cx="6" cy="19" r="2.2" stroke="currentColor" stroke-width="1.6" />
-                                <circle cx="18" cy="12" r="2.2" stroke="currentColor" stroke-width="1.6" />
-                                <path d="M7.8 6.2 16.2 10.8M7.8 17.8l8.4-4.6" stroke="currentColor"
-                                    stroke-width="1.6" stroke-linecap="round" />
-                            </svg>
-                        </span>
-                        <span class="algorithm_body">
-                            <span class="algorithm_title">Обход в глубину <span class="algo_badge">DFS</span></span>
-                            <span class="algorithm_desc">Рекурсия · O(V + E)</span>
-                        </span>
-                        <span class="algorithm_play" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8 5.5v13l11-6.5-11-6.5Z" />
-                            </svg>
-                        </span>
-                    </button>
-                    <div class="algorithm_card is_disabled" aria-disabled="true">
-                        <span class="algorithm_icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M4 18 10 6l4 8 3-5 3 9" stroke="currentColor" stroke-width="1.6"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </span>
-                        <span class="algorithm_body">
-                            <span class="algorithm_title">Дейкстра</span>
-                            <span class="algorithm_desc">Кратчайшие пути · веса</span>
-                        </span>
-                        <span class="soon">скоро</span>
-                    </div>
-                    <div class="algorithm_card is_disabled" aria-disabled="true">
-                        <span class="algorithm_icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M5 7h14M5 12h14M5 17h9" stroke="currentColor" stroke-width="1.6"
-                                    stroke-linecap="round" />
-                            </svg>
-                        </span>
-                        <span class="algorithm_body">
-                            <span class="algorithm_title">Беллман-Форд</span>
-                            <span class="algorithm_desc">Кратчайшие пути · веса</span>
-                        </span>
-                        <span class="soon">скоро</span>
-                    </div>
-                    <div class="algorithm_card is_disabled" aria-disabled="true">
-                        <span class="algorithm_icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="1.6"
-                                    stroke-linecap="round" />
-                            </svg>
-                        </span>
-                        <span class="algorithm_body">
-                            <span class="algorithm_title">Краскал</span>
-                            <span class="algorithm_desc">Минимальное остовное дерево</span>
-                        </span>
-                        <span class="soon">скоро</span>
-                    </div>
-                </div>
-                <div class="results">
-                    <div class="result_row">
-                        <span class="result_label">BFS</span>
-                        <p id="BFS_result">Запустите обход, чтобы увидеть порядок вершин.</p>
-                    </div>
-                    <div class="result_row">
-                        <span class="result_label">DFS</span>
-                        <p id="DFS_result">Запустите обход, чтобы увидеть порядок вершин.</p>
-                    </div>
-                </div>
-                <button type="button" id="default_colors" class="btn btn_ghost btn_wide" disabled>
-                    Сбросить цвета и плеер
-                </button>
-            </section>
-
-            <section class="panel_section panel_section_grow">
-                <div class="section_head">
-                    <h2>Инструменты</h2>
-                    <span class="section_note">режим холста</span>
-                </div>
-                <form class="form_mode segmented">
-                    <div class="form_mode_field">
-                        <input type="radio" name="mode" id="default" checked>
-                        <label for="default" class="btn">Выбор</label>
-                    </div>
-                    <div class="form_mode_field">
-                        <input type="radio" name="mode" id="vertex">
-                        <label for="vertex" class="btn">Вершина</label>
-                    </div>
-                    <div class="form_mode_field">
-                        <input type="radio" name="mode" id="edge">
-                        <label for="edge" class="btn">Ребро</label>
-                    </div>
-                </form>
-                <div class="tool_hints">
-                    <p><kbd>Двойной клик</kbd> по холсту создаёт вершину.</p>
-                    <p><kbd>Shift</kbd> + перетаскивание от узла к узлу создаёт ребро.</p>
-                    <p><kbd>Пробел</kbd> + drag или средняя кнопка панорамируют.</p>
-                    <p>Правый клик по узлу или ребру открывает меню.</p>
-                </div>
-                <div class="legend">
-                    <span><i class="legend_dot legend_dot_default"></i>Вершина</span>
-                    <span><i class="legend_dot legend_dot_visited"></i>Пройдено</span>
-                    <span><i class="legend_dot legend_dot_active"></i>Активная</span>
-                </div>
-            </section>
-        </aside>
-
-        <section class="workspace">
-            <div class="canvas_container glass" id="canvas_surface">
-                <svg id="canvas" width="100%" height="100%" viewBox="0 0 1000 600" aria-label="Холст графа">
+            <button type="button" id="focus_exit" class="focus_exit" aria-label="Выйти из режима фокуса">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4" stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-                <div class="canvas_toolbar glass">
-                    <button type="button" id="zoom_out" class="icon_btn" title="Уменьшить" aria-label="Уменьшить">
-                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path d="M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                        </svg>
-                    </button>
-                    <span id="zoom_level" class="zoom_level">100%</span>
-                    <button type="button" id="zoom_in" class="icon_btn" title="Увеличить" aria-label="Увеличить">
-                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8"
-                                stroke-linecap="round" />
-                        </svg>
-                    </button>
-                    <span class="toolbar_sep"></span>
-                    <button type="button" id="fit_view" class="icon_btn" title="Показать весь граф"
-                        aria-label="Показать весь граф">
-                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4" stroke="currentColor"
-                                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                </div>
-                <div class="canvas_hint">
-                    <kbd>Двойной клик</kbd> вершина · <kbd>Shift</kbd> + drag ребро · <kbd>Колесо</kbd> зум ·
-                    <kbd>Пробел</kbd> панорама
-                </div>
-                <div class="player glass">
-                    <div class="player_controls">
-                        <button type="button" id="step_back" class="icon_btn" title="Шаг назад"
-                            aria-label="Шаг назад" disabled>
+                Выйти из фокуса
+                <kbd>Esc</kbd>
+            </button>
+
+            <div class="player_dock" id="player_dock" aria-label="HUD и плеер">
+                <div class="hud" aria-label="Управление видом">
+                    <div class="hud_group">
+                        <button type="button" id="zoom_out" class="icon_btn" title="Уменьшить"
+                            aria-label="Уменьшить масштаб">
                             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M6 5v14" stroke="currentColor" stroke-width="1.8"
+                                <path d="M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                            </svg>
+                        </button>
+                        <span id="zoom_level" class="zoom_level">100%</span>
+                        <button type="button" id="zoom_in" class="icon_btn" title="Увеличить"
+                            aria-label="Увеличить масштаб">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8"
                                     stroke-linecap="round" />
+                            </svg>
+                        </button>
+                        <span class="toolbar_sep"></span>
+                        <button type="button" id="fit_view" class="icon_btn" title="Вписать в экран"
+                            aria-label="Вписать граф в экран">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
+                    <span class="hud_sep"></span>
+                    <span id="pointer_coords" class="hud_coords">x — · y —</span>
+                </div>
+
+                <div class="player" aria-label="Плеер алгоритма">
+                    <div class="player_controls">
+                        <button type="button" id="step_back" class="icon_btn" title="Шаг назад" aria-label="Шаг назад"
+                            disabled>
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M6 5v14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
                                 <path d="M18 6 9 12l9 6V6Z" fill="currentColor" />
                             </svg>
                         </button>
-                        <button type="button" id="play_pause" class="icon_btn icon_btn_primary"
-                            title="Воспроизвести" aria-label="Воспроизвести" disabled>
+                        <button type="button" id="play_pause" class="icon_btn icon_btn_primary" title="Воспроизвести"
+                            aria-label="Воспроизвести" disabled>
                             <span class="icon_play" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M8 5.5v13l11-6.5-11-6.5Z" />
@@ -288,75 +76,347 @@
                             </span>
                             <span class="icon_pause" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <rect x="7" y="5" width="3.5" height="14" rx="1" />
-                                    <rect x="13.5" y="5" width="3.5" height="14" rx="1" />
+                                    <rect x="7" y="5" width="3.5" height="14" />
+                                    <rect x="13.5" y="5" width="3.5" height="14" />
                                 </svg>
                             </span>
                         </button>
                         <button type="button" id="step_forward" class="icon_btn" title="Шаг вперёд"
                             aria-label="Шаг вперёд" disabled>
                             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M18 5v14" stroke="currentColor" stroke-width="1.8"
-                                    stroke-linecap="round" />
+                                <path d="M18 5v14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
                                 <path d="M6 6l9 6-9 6V6Z" fill="currentColor" />
                             </svg>
                         </button>
                     </div>
                     <div class="player_timeline">
-                        <input type="range" id="player_progress" min="0" max="0" step="1" value="0"
-                            aria-label="Позиция воспроизведения" disabled>
                         <div class="player_meta">
-                            <span id="player_status">Готово</span>
                             <span id="player_step">0 / 0</span>
                         </div>
                     </div>
-                    <div class="speed">
-                        <label for="speed">Скорость</label>
-                        <input type="range" id="speed" min="0.1" max="3" step="0.1" value="1"
-                            aria-label="Скорость воспроизведения">
-                        <span id="speed_value">1.0×</span>
+                    <div class="speed_menu_wrap" id="speed_control">
+                        <button type="button" id="speed_toggle" class="speed_button" title="Скорость"
+                            aria-label="Скорость воспроизведения" aria-haspopup="true" aria-expanded="false"
+                            aria-controls="speed_menu">
+                            <span id="speed_value">1.0×</span>
+                        </button>
+                        <div class="speed_menu" id="speed_menu" role="dialog" aria-label="Настройка скорости" hidden>
+                            <div class="speed_menu_head">
+                                <span>Скорость воспроизведения</span>
+                            </div>
+                            <label class="speed_slider" for="speed">
+                                <input type="range" id="speed" min="0.1" max="3" step="0.1" value="1"
+                                    aria-label="Скорость воспроизведения">
+                            </label>
+                            <div class="speed_presets" role="group" aria-label="Быстрый выбор скорости">
+                                <button type="button" class="speed_preset" data-speed="0.5"
+                                    aria-pressed="false">0.5×</button>
+                                <button type="button" class="speed_preset is_active" data-speed="1"
+                                    aria-pressed="true">1.0×</button>
+                                <button type="button" class="speed_preset" data-speed="2"
+                                    aria-pressed="false">2.0×</button>
+                                <button type="button" class="speed_preset" data-speed="3"
+                                    aria-pressed="false">3.0×</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </main>
 
-        <aside class="panel right_panel glass">
-            <section class="panel_section">
-                <div class="section_head">
-                    <h2>Структура</h2>
-                    <span id="graph_stats" class="section_note">0 вершин · 0 рёбер</span>
-                </div>
-                <div class="tabs" role="tablist" aria-label="Представление графа">
-                    <button type="button" class="tab is_active" data-view="matrix" id="tab_matrix"
-                        role="tab" aria-selected="true">Матрица смежности</button>
-                    <button type="button" class="tab" data-view="list" id="tab_list" role="tab"
-                        aria-selected="false">Список смежности</button>
-                    <button type="button" class="tab" data-view="incidence" id="tab_incidence" role="tab"
-                        aria-selected="false">Матрица инцидентности</button>
-                </div>
-                <div class="data_panel" id="graph_info_content"></div>
-            </section>
+        <header class="app_header">
+            <div class="header_left">
+                <button type="button" id="toggle_left_panel" class="icon_btn" title="Панель алгоритмов (Ctrl+B)"
+                    aria-label="Скрыть панель алгоритмов" aria-controls="left_panel" aria-expanded="true"
+                    aria-keyshortcuts="Control+B">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <rect x="3.5" y="4" width="17" height="16" rx="1.5" stroke="currentColor" stroke-width="1.7" />
+                        <path d="M9 4v16" stroke="currentColor" stroke-width="1.7" />
+                    </svg>
+                </button>
+                <div class="brand">
+                    <span class="brand_mark" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="6" cy="12" r="2.1" stroke="currentColor" stroke-width="1.6" />
+                            <circle cx="18" cy="6" r="2.1" stroke="currentColor" stroke-width="1.6" />
+                            <circle cx="18" cy="18" r="2.1" stroke="currentColor" stroke-width="1.6" />
+                            <path d="M7.9 11.1 16.1 6.9M7.9 12.9l8.2 4.2" stroke="currentColor" stroke-width="1.6"
+                                stroke-linecap="round" />
+                        </svg>
+                    </span>
+                    <span class="brand_title">Graph Studio</span>
+                    <span class="brand_sub">workbench</span>
+                    <div class="toolbar_row brand_actions" role="group" aria-label="Файл">
+                        <input type="file" id="upload_graph"
+                            accept=".graph.svg,.svg,image/svg+xml,.json,application/json,.dot,.gv,text/vnd.graphviz"
+                            class="visually_hidden">
+                        <button type="button" id="upload_graph_button" class="icon_btn" title="Импорт графа"
+                            aria-label="Импорт графа">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M12 16V5m0 0L8 9m4-4 4 4" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M5 15v2.5A1.5 1.5 0 0 0 6.5 19h11a1.5 1.5 0 0 0 1.5-1.5V15"
+                                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                            </svg>
+                        </button>
 
-            <section class="panel_section right_panel_grow">
-                <div class="section_head">
-                    <h2>Псевдокод</h2>
-                    <span id="pseudocode_title" class="badge">BFS</span>
+                        <div class="dropdown" id="export_dropdown">
+                            <button type="button" id="export_toggle" class="icon_btn" title="Экспорт графа"
+                                aria-label="Экспорт графа" aria-haspopup="true" aria-expanded="false">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 5v11m0 0 4-4m-4 4-4-4" stroke="currentColor" stroke-width="1.8"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M5 15v2.5A1.5 1.5 0 0 0 6.5 19h11a1.5 1.5 0 0 0 1.5-1.5V15"
+                                        stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                                </svg>
+                            </button>
+                            <div class="dropdown_menu" id="export_menu" role="menu">
+                                <a id="download_graph" href="#" download="graph.graph.svg"
+                                    class="dropdown_item" role="menuitem">
+                                    <span>SVG</span>
+                                    <span class="format_tag">.graph.svg</span>
+                                </a>
+                                <a id="download_graph_json" href="#" download="graph.json"
+                                    class="dropdown_item" role="menuitem">
+                                    <span>JSON</span>
+                                    <span class="format_tag">.json</span>
+                                </a>
+                                <a id="download_graph_dot" href="#" download="graph.dot"
+                                    class="dropdown_item" role="menuitem">
+                                    <span>Graphviz DOT</span>
+                                    <span class="format_tag">.dot</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="pseudocode" id="pseudocode"></div>
-                <div class="section_head log_head">
-                    <h2>Лог алгоритма</h2>
-                    <button type="button" id="clear_log" class="ghost_small">Очистить</button>
+            </div>
+
+            <div class="header_right">
+                <div class="header_status">
+                    <span class="status_dot" aria-hidden="true"></span>
+                    <span id="app_status" role="status">Готово</span>
                 </div>
-                <div class="algorithm_log" id="algorithm_log"></div>
-            </section>
+                <button type="button" id="focus_toggle" class="icon_btn" title="Режим фокуса (Tab / F)"
+                    aria-label="Включить режим фокуса" aria-pressed="false" aria-keyshortcuts="Tab F">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <button type="button" id="toggle_right_panel" class="icon_btn" title="Инспектор (Ctrl+I)"
+                    aria-label="Скрыть инспектор" aria-controls="right_panel" aria-expanded="true"
+                    aria-keyshortcuts="Control+I">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <rect x="3.5" y="4" width="17" height="16" rx="1.5" stroke="currentColor" stroke-width="1.7" />
+                        <path d="M15 4v16" stroke="currentColor" stroke-width="1.7" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <aside class="panel left_panel" id="left_panel" aria-label="Алгоритмы и навигация">
+            <div class="panel_head">
+                <span class="panel_title">Explorer</span>
+                <button type="button" id="left_panel_close" class="icon_btn panel_close" aria-label="Скрыть проводник">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="m7 7 10 10M17 7 7 17" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="panel_tabs" role="tablist" aria-label="Разделы проводника">
+                <button type="button" class="panel_tab is_active" id="left_tab_algorithms" role="tab"
+                    aria-selected="true" aria-controls="pane_left_algorithms" data-panel-tab="algorithms">
+                    Все алгоритмы
+                </button>
+                <button type="button" class="panel_tab" id="left_tab_user" role="tab" aria-selected="false"
+                    aria-controls="pane_left_user_algorithms" data-panel-tab="user" tabindex="-1">
+                    Мои алгоритмы
+                </button>
+                <button type="button" class="panel_tab" id="left_tab_navigation" role="tab" aria-selected="false"
+                    aria-controls="pane_left_navigation" data-panel-tab="navigation" tabindex="-1">
+                    Навигация
+                </button>
+
+            </div>
+
+            <div class="panel_scroll">
+                <section class="tab_pane is_active" id="pane_left_algorithms" role="tabpanel"
+                    aria-labelledby="left_tab_algorithms" data-panel-pane="algorithms">
+                    <section class="panel_section">
+                        <div class="section_head algorithm_section_head">
+                            <h2>Параметры</h2>
+                            <button type="button" id="default_colors" class="reset_button"
+                                title="Сбросить цвета и плеер" aria-label="Сбросить цвета и плеер" disabled>
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M3.5 12a8.5 8.5 0 1 0 2.49-6.01L3.5 8.5" stroke="currentColor"
+                                        stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M3.5 3.5v5h5" stroke="currentColor" stroke-width="1.7"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <label class="field" for="vertex_num">
+                            <span>Стартовая вершина</span>
+                            <select name="vertex_num" id="vertex_num" disabled></select>
+                        </label>
+
+                        <div class="algorithm_accordion" id="algorithm_list">
+                            <div class="algorithm_item is_disabled" aria-disabled="true">
+                                <div class="algorithm_header">
+                                    <span class="algorithm_name">Дейкстра</span>
+                                    <span class="algorithm_meta">Кратчайшие пути · веса</span>
+                                    <span class="soon">скоро</span>
+                                </div>
+                            </div>
+                            <div class="algorithm_item is_disabled" aria-disabled="true">
+                                <div class="algorithm_header">
+                                    <span class="algorithm_name">Беллман-Форд</span>
+                                    <span class="algorithm_meta">Кратчайшие пути · веса</span>
+                                    <span class="soon">скоро</span>
+                                </div>
+                            </div>
+                            <div class="algorithm_item is_disabled" aria-disabled="true">
+                                <div class="algorithm_header">
+                                    <span class="algorithm_name">Краскал</span>
+                                    <span class="algorithm_meta">Минимальное остовное дерево</span>
+                                    <span class="soon">скоро</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+
+                <section class="tab_pane" id="pane_left_navigation" role="tabpanel"
+                    aria-labelledby="left_tab_navigation" data-panel-pane="navigation" hidden>
+                    <section class="panel_section">
+                        <div class="tool_hints">
+                            <p><kbd>Двойной клик</kbd> создаёт вершину.</p>
+                            <p><kbd>Shift</kbd> + drag от узла создаёт ребро.</p>
+                            <p><kbd>Shift</kbd> + <kbd>Пробел</kbd> + drag создаёт направленное ребро.</p>
+                            <p><kbd>Пробел</kbd> + drag панорамирует холст.</p>
+                            <p><kbd>Колесо</kbd> изменяет масштаб.</p>
+                            <p><kbd>ЛКМ</kbd> или <kbd>ПКМ</kbd> по ребру открывает настройки.</p>
+                            <p><kbd>ПКМ</kbd> по узлу открывает меню.</p>
+                            <p><kbd>Tab</kbd> / <kbd>F</kbd> включает фокус, <kbd>Esc</kbd> выходит.</p>
+                            <p><kbd>Ctrl</kbd> + <kbd>B</kbd> / <kbd>Ctrl</kbd> + <kbd>I</kbd> скрывает панели.</p>
+                        </div>
+                        <div class="legend">
+                            <span><i class="legend_dot legend_dot_default"></i>Вершина</span>
+                            <span><i class="legend_dot legend_dot_visited"></i>Пройдено</span>
+                            <span><i class="legend_dot legend_dot_active"></i>Текущая</span>
+                        </div>
+                    </section>
+                </section>
+
+                <section class="tab_pane" id="pane_left_user_algorithms" role="tabpanel" aria-labelledby="left_tab_user"
+                    data-panel-pane="user" hidden>
+                    <section class="panel_section">
+                        <div class="section_head">
+                            <h2>Мои алгоритмы</h2>
+                            <button type="button" id="user_algorithm_add" class="btn btn_small">Новый</button>
+                        </div>
+                        <p class="user_algorithm_hint">
+                            Свои алгоритмы — это ES-модули с функцией <code>run</code>. Код выполняется
+                            в изолированном Worker и сохраняется в браузере.
+                        </p>
+                        <div class="user_algorithm_list" id="user_algorithm_list"></div>
+                    </section>
+                </section>
+            </div>
+
+            <div class="panel_resizer" data-resize="left" aria-hidden="true"></div>
         </aside>
 
-        <div id="context_menu" class="context_menu glass" hidden>
+        <aside class="panel right_panel" id="right_panel" aria-label="Инспектор графа">
+            <div class="panel_head">
+                <span class="panel_title">Inspector</span>
+                <span id="graph_stats" class="section_note">0 вершин · 0 рёбер</span>
+                <button type="button" id="right_panel_close" class="icon_btn panel_close" aria-label="Скрыть инспектор">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="m7 7 10 10M17 7 7 17" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="panel_tabs" role="tablist" aria-label="Разделы инспектора">
+                <button type="button" class="panel_tab is_active" id="right_tab_structure" role="tab"
+                    aria-selected="true" aria-controls="pane_structure" data-panel-tab="structure">
+                    Структура
+                </button>
+                <button type="button" class="panel_tab" id="right_tab_code" role="tab" aria-selected="false"
+                    aria-controls="pane_code" data-panel-tab="code" tabindex="-1">
+                    Псевдокод
+                </button>
+                <button type="button" class="panel_tab" id="right_tab_log" role="tab" aria-selected="false"
+                    aria-controls="pane_log" data-panel-tab="log" tabindex="-1">
+                    Лог
+                </button>
+            </div>
+
+            <div class="panel_scroll right_scroll">
+                <section class="tab_pane is_active" id="pane_structure" role="tabpanel"
+                    aria-labelledby="right_tab_structure" data-panel-pane="structure">
+                    <div class="structure_head">
+                        <div class="tabs" role="tablist" aria-label="Представление графа">
+                            <button type="button" class="tab is_active" data-view="matrix" id="tab_matrix" role="tab"
+                                aria-selected="true">Матрица<br />смежности</button>
+                            <button type="button" class="tab" data-view="list" id="tab_list" role="tab"
+                                aria-selected="false">Список<br />смежности</button>
+                            <button type="button" class="tab" data-view="incidence" id="tab_incidence" role="tab"
+                                aria-selected="false">Матрица<br />инцидентности</button>
+                        </div>
+                        <button type="button" id="copy_structure" class="icon_btn structure_copy"
+                            title="Скопировать представление в Python" aria-label="Скопировать представление в Python"
+                            disabled>
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <rect x="9" y="9" width="11" height="11" rx="1.5" stroke="currentColor"
+                                    stroke-width="1.7" />
+                                <path d="M5.5 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v.5"
+                                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="data_panel" id="graph_info_content"></div>
+                </section>
+
+                <section class="tab_pane" id="pane_code" role="tabpanel" aria-labelledby="right_tab_code"
+                    data-panel-pane="code" hidden>
+                    <div class="pane_head">
+                        <h2>Псевдокод</h2>
+                        <span id="pseudocode_title" class="badge">BFS</span>
+                    </div>
+                    <div class="pseudocode" id="pseudocode"></div>
+                </section>
+
+                <section class="tab_pane" id="pane_log" role="tabpanel" aria-labelledby="right_tab_log"
+                    data-panel-pane="log" hidden>
+                    <div class="pane_head">
+                        <h2>Лог алгоритма</h2>
+                        <button type="button" id="clear_log" class="ghost_small">Очистить</button>
+                    </div>
+                    <div class="algorithm_log" id="algorithm_log"></div>
+                </section>
+            </div>
+
+            <div class="panel_resizer" data-resize="right" aria-hidden="true"></div>
+        </aside>
+
+        <div id="context_menu" class="context_menu" hidden>
             <button type="button" data-action="rename">Переименовать</button>
-            <button type="button" data-action="weight" disabled>
-                <span>Вес ребра</span>
-                <span class="soon">скоро</span>
-            </button>
+            <div class="context_edge_fields" id="context_edge_fields" hidden>
+                <label class="context_weight" for="context_weight">
+                    <span>Вес</span>
+                    <input id="context_weight" type="number" step="any" inputmode="decimal"
+                        autocomplete="off">
+                </label>
+                <div class="context_direction" id="context_direction"></div>
+            </div>
             <span class="context_sep"></span>
             <button type="button" data-action="delete" class="context_danger">Удалить</button>
         </div>
@@ -366,13 +426,78 @@
                 <h2>Имя вершины</h2>
                 <input id="rename_input" maxlength="24" autocomplete="off" spellcheck="false">
                 <div class="modal_actions">
-                    <button type="button" id="rename_cancel" class="btn btn_ghost">Отмена</button>
+                    <button type="button" id="rename_cancel" class="btn">Отмена</button>
                     <button type="submit" value="save" class="btn btn_primary">Сохранить</button>
                 </div>
             </form>
         </dialog>
+
+        <dialog id="user_algorithm_dialog" class="modal algorithm_editor">
+            <form id="user_algorithm_form">
+                <div class="editor_head">
+                    <h2 id="user_algorithm_title">Новый алгоритм</h2>
+                    <button type="button" id="user_algorithm_delete" class="ghost_small" disabled>Удалить</button>
+                </div>
+
+                <p class="editor_hint">
+                    Держите побочные эффекты внутри <code>run</code> и запускайте только доверенный код:
+                    Worker не имеет доступа к DOM, но работает в том же origin.
+                </p>
+
+                <label class="field field_stack" for="user_algorithm_name">
+                    <span>Название</span>
+                    <input id="user_algorithm_name" maxlength="48" autocomplete="off" required>
+                </label>
+
+                <div class="editor_grid">
+                    <label class="field field_stack" for="user_algorithm_short_name">
+                        <span>Короткое имя</span>
+                        <input id="user_algorithm_short_name" maxlength="12" autocomplete="off">
+                    </label>
+                    <label class="field field_stack" for="user_algorithm_meta">
+                        <span>Метка</span>
+                        <input id="user_algorithm_meta" maxlength="40" autocomplete="off"
+                            placeholder="Степень · O(V + E)">
+                    </label>
+                </div>
+
+                <label class="field field_stack" for="user_algorithm_description">
+                    <span>Описание</span>
+                    <input id="user_algorithm_description" maxlength="120" autocomplete="off">
+                </label>
+
+                <label class="field field_inline" for="user_algorithm_requires_start">
+                    <input type="checkbox" id="user_algorithm_requires_start" checked>
+                    <span>Требует стартовую вершину</span>
+                </label>
+
+                <label class="field field_stack" for="user_algorithm_pseudocode">
+                    <span>Псевдокод (по строке на строку)</span>
+                    <textarea id="user_algorithm_pseudocode" rows="4" spellcheck="false"></textarea>
+                </label>
+
+                <label class="field field_stack" for="user_algorithm_source">
+                    <span>Код (ES-модуль)</span>
+                    <textarea id="user_algorithm_source" rows="12" spellcheck="false"></textarea>
+                </label>
+
+                <p class="editor_error" id="user_algorithm_error" role="alert" hidden></p>
+
+                <div class="modal_actions editor_actions">
+                    <button type="button" id="user_algorithm_import" class="btn btn_small">Импорт .js</button>
+                    <button type="button" id="user_algorithm_export" class="btn btn_small">Экспорт .js</button>
+                    <span class="editor_spacer"></span>
+                    <button type="button" id="user_algorithm_cancel" class="btn btn_small">Отмена</button>
+                    <button type="button" id="user_algorithm_validate" class="btn btn_small">Проверить</button>
+                    <button type="button" id="user_algorithm_run" class="btn btn_small">Запустить</button>
+                    <button type="button" id="user_algorithm_save" class="btn btn_primary btn_small">Сохранить</button>
+                </div>
+            </form>
+        </dialog>
+
+        <input type="file" id="user_algorithm_file" accept=".js,text/javascript" hidden>
     </div>
-    <script src="./scripts/script.js" type="module"></script>
+    <script src="./scripts/main.js" type="module"></script>
 </body>
 
 </html>

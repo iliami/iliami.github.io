@@ -1,12 +1,9 @@
+import { createSvgElement } from "../../app/dom.js";
 import {
     getAdjacencyList,
     getAdjacencyMatrix,
     getIncidenceMatrix,
-} from "./core.js";
-
-import { graphInfoContent, graphTabs, onGraphChange, state } from "./ui.js";
-
-let activeView = "matrix";
+} from "../../core/graph-index.js";
 
 const getLabel = (vertex) => vertex?.label ?? vertex?.id ?? "";
 
@@ -14,9 +11,11 @@ const createEmptyState = (text) => {
     const container = document.createElement("div");
     container.className = "empty_state";
 
-    const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    icon.setAttribute("viewBox", "0 0 24 24");
-    icon.setAttribute("fill", "none");
+    const icon = createSvgElement("svg", {
+        viewBox: "0 0 24 24",
+        fill: "none",
+    });
+
     icon.innerHTML =
         '<circle cx="6" cy="6" r="2.2" stroke="currentColor" stroke-width="1.6"/>' +
         '<circle cx="18" cy="18" r="2.2" stroke="currentColor" stroke-width="1.6"/>' +
@@ -106,6 +105,7 @@ const renderAdjacencyList = (graph) => {
             const neighbor = graph.vertices.find(
                 (candidate) => candidate.id === neighborId,
             );
+
             return getLabel(neighbor);
         });
 
@@ -157,56 +157,26 @@ const renderIncidenceMatrix = (graph) => {
     return table;
 };
 
-const renderGraphInfo = () => {
-    graphInfoContent.replaceChildren();
-
-    if (state.graph.vertices.length === 0) {
-        graphInfoContent.append(
-            createEmptyState(
-                "Добавьте вершины на холст — представления графа появятся здесь автоматически.",
-            ),
+export const renderStructure = (graph, activeView) => {
+    if (graph.vertices.length === 0) {
+        return createEmptyState(
+            "Добавьте вершины на холст — представления графа появятся здесь автоматически.",
         );
-        return;
     }
 
     if (activeView === "list") {
-        graphInfoContent.append(renderAdjacencyList(state.graph));
-        return;
+        return renderAdjacencyList(graph);
     }
 
     if (activeView === "incidence") {
-        if (state.graph.edges.length === 0) {
-            graphInfoContent.append(
-                createEmptyState(
-                    "В графе пока нет рёбер. Создайте связь, чтобы увидеть матрицу инцидентности.",
-                ),
+        if (graph.edges.length === 0) {
+            return createEmptyState(
+                "В графе пока нет рёбер. Создайте связь, чтобы увидеть матрицу инцидентности.",
             );
-            return;
         }
 
-        graphInfoContent.append(renderIncidenceMatrix(state.graph));
-        return;
+        return renderIncidenceMatrix(graph);
     }
 
-    graphInfoContent.append(renderAdjacencyMatrix(state.graph));
+    return renderAdjacencyMatrix(graph);
 };
-
-graphTabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-        activeView = tab.dataset.view ?? "matrix";
-
-        graphTabs.forEach((candidate) => {
-            const isActive = candidate === tab;
-            candidate.classList.toggle("is_active", isActive);
-            candidate.setAttribute("aria-selected", String(isActive));
-        });
-
-        renderGraphInfo();
-    });
-});
-
-onGraphChange(() => {
-    renderGraphInfo();
-});
-
-renderGraphInfo();
